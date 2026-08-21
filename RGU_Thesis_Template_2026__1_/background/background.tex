@@ -5,9 +5,9 @@ own device out to the open Internet.
 
 \section{Device and Access Point}
 Measurements in this section were taken from a laptop running Ubuntu, connected over Wi-Fi
-from room NB-09, Satpura Hostel. The access point nearest us is photographed in
-Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving our roll numbers,
-the date, and the location.
+(interface \texttt{wlo1}) from room NB-09, Satpura Hostel. The access point nearest us is
+photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving our
+roll numbers, the date, and the location.
 
 \begin{figure}[H]
     \centering
@@ -17,17 +17,82 @@ the date, and the location.
 \end{figure}
 
 \section{Finding T1}
-Running \texttt{ip route | grep default} identified our default gateway as \texttt{10.184.0.13}.
-This is the address used as T1 throughout this report. A traceroute to a destination outside
-campus places this address at hop~1, as expected for a default gateway.
+\texttt{ip -br a} shows our device's address as \texttt{10.184.6.40/19} on \texttt{wlo1}.
+\texttt{ip route | grep default} gives:
+\begin{quote}\ttfamily\footnotesize
+default via 10.184.0.1 dev wlo1 proto dhcp src 10.184.6.40 metric 600
+\end{quote}
+so the DHCP-assigned default gateway is \textbf{10.184.0.1}. \texttt{resolvectl status} shows our
+active DNS resolver as \textbf{10.7.172.202} (with 10.10.1.4, 10.10.1.5, 10.10.2.2 also
+configured).
 
-\textcolor{red}{\footnotesize TODO: fill in -- IP address, DNS resolver (\texttt{resolvectl status}), interface name (e.g.\ \texttt{wlan0}).}
+\textbf{A discrepancy worth flagging.} The handout notes that a traceroute to anything outside
+campus should show the gateway at hop~1 ``by definition'', and that if it doesn't, that's worth
+a sentence. In our case it doesn't: every traceroute we ran (Chapter~\ref{ch:Design}, and the
+one below) shows hop~1 as \textbf{10.184.0.13}, not 10.184.0.1. Both addresses are in the same
+\texttt{/19}, so our best explanation is that 10.184.0.1 is a virtual/first-hop address (e.g.\ a
+shared gateway IP fronting several access switches, possibly via VRRP-style redundancy), while
+10.184.0.13 is the specific physical router interface that actually decrements TTL and replies
+with the ICMP time-exceeded message -- i.e.\ our packets' first real Layer-3 hop is a different,
+specific box behind the advertised gateway address. We cannot fully rule out the alternative
+that 10.184.0.1 simply never responds to traceroute probes (rate-limited or filtered ICMP) while
+still being the true first hop -- we have no way to distinguish ``different device'' from ``same
+device, doesn't reply on this address'' without further tooling that is out of scope here. For
+the rest of this report we follow the handout's implicit intent and use \textbf{10.184.0.13} as
+T1, since that is the address that is consistently and observably our first hop.
 
 \section{Path to the Boundary}
-\textcolor{red}{\footnotesize TODO: run \texttt{traceroute -n 8.8.8.8} (or similar); record the IP and \texttt{whois} owner of the first three public (non-10.x.x.x) hops after our gateway, and state where we cross the IIT Delhi boundary.}
+A traceroute to an external destination not previously used elsewhere in this report
+(\texttt{www.codechef.com}, chosen to avoid double-counting a target already used for T1--T5)
+gives:
+\begin{quote}\ttfamily\footnotesize
+\begin{tabbing}
+ 1\quad \= 10.184.0.13\quad \= 4.929 ms  4.856 ms  4.816 ms \\
+ 2\> 10.255.109.100\> 4.761 ms  4.732 ms  4.702 ms \\
+ 3\> 10.255.107.3\> 4.679 ms  4.649 ms  4.622 ms \\
+ 4\> 10.119.233.65\> 4.590 ms  4.560 ms  4.531 ms \\
+ 5\> * * *\> (unresponsive) \\
+ 6\> 10.119.234.162\> 8.483 ms  7.723 ms  7.581 ms \\
+ 7\> * 14.143.159.145 11.753 ms *\> (first public hop) \\
+ 8\> * * *\> (unresponsive) \\
+ 9\> 121.240.255.30\> 11.581 ms  11.539 ms * \\
+10\> 104.23.231.30 17.261 ms * 104.23.231.11\> 9.883 ms \\
+11\> 172.67.75.52\> 9.713 ms  8.882 ms  8.770 ms \quad (destination)
+\end{tabbing}
+\end{quote}
+
+Hops 1--6 are all internal (\texttt{10.x.x.x}) and match the core/egress path already identified
+in Table~\ref{tab:hophunt} (Chapter~\ref{ch:Design}): local gateway, the two core distribution
+routers, the internal border router, and the external egress gateway. Hop~5 does not respond,
+which we read as an unresponsive internal hop rather than a gap in the path, since hop~6 replies
+with a plausible, monotonically-consistent RTT. The first \emph{public} IP appears at hop~7:
+
+\begin{table}[H]
+\centering
+\caption{Whois lookups for the first public hops after our gateway.}
+\label{tab:whoispublic}
+\begin{tabular}{@{}clll@{}}
+\toprule
+Hop & IP & Owner (whois) & Role \\
+\midrule
+7 & 14.143.159.145 & Tata Communications (TATACOMM-IN) & Upstream ISP hop \\
+9 & 121.240.255.30 & Tata Communications (TATACOMM-IN, ex-VSNL) & Upstream ISP hop \\
+10 & 104.23.231.30 / .11 & Cloudflare, Inc. (CLOUDFLARENET) & CDN edge \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is where our traffic crosses the IIT Delhi boundary: hop~6 (10.119.234.162, the internal
+egress gateway) hands off to hop~7, the first Tata Communications address. From there it stays
+on Tata's network (hop~9) before landing on a Cloudflare edge node (hop~10) that terminates
+\texttt{www.codechef.com} -- consistent with the CDN-edge explanation we gave in
+Chapter~\ref{ch:Implementation} for why T5's measured minimum RTT undercut its nominal
+geographic distance: Tata Communications appears to be (at least one of) our commercial
+upstream(s), and a lot of what looks like ``the open Internet'' from here is actually a nearby
+CDN edge rather than the origin server.
 
 \section{Diagram: Device to Internet}
-\textcolor{red}{\footnotesize TODO: one diagram (Graphviz, style of Figure~\ref{fig:topology}): device $\to$ interface $\to$ AP $\to$ gateway (10.184.0.13) $\to$ each hop, evidence-tagged, ending in a dashed ``here my evidence stops'' line (past it, grey/\emph{inferred}). Both teammates' paths side by side.}
+\textcolor{red}{\footnotesize TODO: one diagram (Graphviz, style of Figure~\ref{fig:topology}), built from the data above: device $\to$ wlo1 $\to$ AP (E-1) $\to$ 10.184.0.13 (T1) $\to$ 10.255.109.100 $\to$ 10.255.107.3 $\to$ 10.119.233.65 $\to$ [10.184.0.1 aside, see discrepancy note] $\to$ 10.119.234.162 $\to$ \textbf{boundary} $\to$ 14.143.159.145 (Tata) $\to$ 121.240.255.30 (Tata) $\to$ 104.23.231.x (Cloudflare), with a dashed ``here my evidence stops'' line after the third public hop and everything past it in grey/\emph{inferred}. Both teammates' paths side by side -- need Yashvardhan's equivalent data to add his side.}
 
 \section{Evidence Tags}
 Every element in the final diagram must carry an evidence tag (E-1, E-2, \ldots) referencing
