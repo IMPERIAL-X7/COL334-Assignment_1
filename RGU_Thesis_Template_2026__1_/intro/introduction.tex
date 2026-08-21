@@ -1,39 +1,57 @@
 \chapter{Introduction}
 \pagenumbering{arabic} \setcounter{page}{1}
 
-A short paragraph introducing the topic the chapter examines.
+Assignment 1 for COL334 (Computer Networks) asks every team to map as much of the IIT Delhi
+campus network as can honestly be measured from an ordinary student device, without
+authentication attempts, SNMP, vulnerability scanners, aggressive scan timing, or scanning of
+anyone else's device. This report covers \textbf{Part A: Cartography}, worth 50 of the 100
+marks for the assignment. Part B (the traffic-capture ``stakeout'') is being completed and
+reported separately by our teammate.
 
+\section{Team}
+This report was prepared jointly by:
+\begin{itemize}
+    \item Tejasvi Shrivastava (2024CS10582)
+    \item Yashvardhan Singh Chaudhary (2024CS10300)
+\end{itemize}
 
-\section{Background}
+\section{Rules of Engagement}
+All measurements in this report were taken under the constraints set out in the assignment
+handout: no authentication attempts, no SNMP, no exploits or vulnerability scanners, scan
+timing no more aggressive than \texttt{-T2}, and no scanning of devices that might belong to a
+student or staff member rather than to the infrastructure itself.
 
-A number of pages about the background of the project.
-
-\section{About this Thesis}
-This is the thesis of \emph{Insert Full Name Here}, submitted as part of the requirements for the degree of MSc Computing: Software Technology at the School of Computing, Robert Gordon University, Scotland.
-
-A number of paragraphs detailing the main expectations of this body of work.
-
+\section{Fixed Targets}
+Wherever this report refers to ``the targets'', it means the five fixed destinations specified in
+the handout:
+\begin{itemize}
+    \item \textbf{T1} -- our default gateway (found per-device, see Chapter~\ref{ch:Background})
+    \item \textbf{T2} -- \texttt{www.iitd.ac.in}
+    \item \textbf{T3} -- \texttt{8.8.8.8}
+    \item \textbf{T4} -- \texttt{www.iitb.ac.in} ($\sim$1100~km)
+    \item \textbf{T5} -- \texttt{www.mit.edu} ($\sim$12{,}000~km)
+\end{itemize}
 
 \section{Chapter List}
-Provide a list of all the chapters within the thesis and a brief summary of the content.
+\textbf{Chapter~\ref{ch:Background}, Your Path Out.} Our own device-to-Internet path: interface,
+gateway, DNS, and the first hops out of campus, each tagged with evidence.
 
-\textbf{Chapter \ref{ch:Background}} Background Research. This chapter
-deals with $\ldots$.
+\textbf{Chapter~\ref{ch:Design}, Campus Topology.} The router hunt (A2.1), the wireless survey
+(A2.2), and our contribution to the shared class map (A2.3).
 
-\textbf{Chapter \ref{ch:Design}} Design. This chapter
-deals with $\ldots$.
+\textbf{Chapter~\ref{ch:Implementation}, The Delay Experiment.} Where RTT time goes (A3.1),
+making transmission delay visible via a packet-size sweep (A3.2), and watching a queue fill
+(A3.3).
 
-\textbf{Chapter \ref{ch:Implementation}} Implementation. This chapter
-deals with $\ldots$.
+\textbf{Chapter~\ref{ch:Evaluation}, Evidence.} The numbered evidence items (E-1 onward)
+that the rest of the report cites.
 
-\textbf{Chapter \ref{ch:Evaluation}} Evaluation \& Testing. This chapter
-deals with $\ldots$.
+\textbf{Chapter~\ref{ch:Conclusion}, Findings.} Three specific, checkable findings about the
+network, each with an alternative explanation we could not rule out.
 
-\textbf{Chapter \ref{ch:Conclusion}} Conclusion. The conclusions of the thesis are presented.
-
-\textbf{Chapter \ref{ch:usingLatex}} Using \LaTeX. This chapter
-deals with how to use the \LaTeX \space system. \textcolor{red}{ERASE OR COMMENT (I.E. ADD A \% SYMBOL) FROM THESIS.TEX (LINE 111) TO DISAPPEAR THIS SECTION BEFORE YOU SUBMIT YOUR WORK!}
-
-
-\section{Conclusion}
-A short conclusion summarising the chapter.
+\section{A Note on Honesty}
+The assignment explicitly rewards the distinction between what we observed directly and what
+we are inferring, and rewards an honestly reported ``no difference'' or ``couldn't reach'' over a
+tidied-up positive result. We have tried to keep to that standard throughout -- flagging
+inferred elements, reporting dropped probes as data rather than omitting them, and naming a
+second explanation wherever our evidence does not fully rule one out.

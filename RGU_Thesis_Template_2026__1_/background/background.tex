@@ -1,9 +1,34 @@
-\chapter{Background Research}\label{ch:Background}
+\chapter{Your Path Out}\label{ch:Background}
 
-This chapter provides some background research on the project and examines some previous work.
+This chapter documents the one part of the network we can see completely: the path from our
+own device out to the open Internet.
 
-\section{Conclusions}
+\section{Device and Access Point}
+Measurements in this section were taken from a laptop running Ubuntu, connected over Wi-Fi
+from room NB-09, Satpura Hostel. The access point nearest us is photographed in
+Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving our roll numbers,
+the date, and the location.
 
-The main conclusions for this chapter.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{report/images/e1_ap_photo.jpeg}
+    \caption[Access point nearest our device]{The access point/wall unit nearest our device during measurement, with evidence placard. See Evidence E-1.}
+    \label{fig:apphoto}
+\end{figure}
 
+\section{Finding T1}
+Running \texttt{ip route | grep default} identified our default gateway as \texttt{10.184.0.13}.
+This is the address used as T1 throughout this report. A traceroute to a destination outside
+campus places this address at hop~1, as expected for a default gateway.
 
+\textcolor{red}{\footnotesize TODO: fill in -- IP address, DNS resolver (\texttt{resolvectl status}), interface name (e.g.\ \texttt{wlan0}).}
+
+\section{Path to the Boundary}
+\textcolor{red}{\footnotesize TODO: run \texttt{traceroute -n 8.8.8.8} (or similar); record the IP and \texttt{whois} owner of the first three public (non-10.x.x.x) hops after our gateway, and state where we cross the IIT Delhi boundary.}
+
+\section{Diagram: Device to Internet}
+\textcolor{red}{\footnotesize TODO: one diagram (Graphviz, style of Figure~\ref{fig:topology}): device $\to$ interface $\to$ AP $\to$ gateway (10.184.0.13) $\to$ each hop, evidence-tagged, ending in a dashed ``here my evidence stops'' line (past it, grey/\emph{inferred}). Both teammates' paths side by side.}
+
+\section{Evidence Tags}
+Every element in the final diagram must carry an evidence tag (E-1, E-2, \ldots) referencing
+Chapter~\ref{ch:Evaluation}; untagged elements score zero per the assignment's marking rules.

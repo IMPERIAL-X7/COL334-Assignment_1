@@ -40,14 +40,14 @@
         \vskip 0.25in
                 {\Large \@author}
         \vskip 0.45in
-        \includegraphics[height=40mm]{rgulogo.jpg}
+        \includegraphics[height=40mm]{iitd_logo.png}
         \vfill
         \vskip 0.25in
         \end{center}
         \begin{center}
-                \sc A report submitted as part of the requirements for the degree\\ of
+                \sc A report submitted for\\
                 \@degreetitle
- \\at the School of Computing, Engineering and Technology \\Robert Gordon University\\ Aberdeen, Scotland
+ \\Department of Computer Science and Engineering \\Indian Institute of Technology Delhi
 
         \end{center}
         \vfill
@@ -55,22 +55,19 @@
         \begin{center}
                 \@submitdate
         \end{center}
-        \vfill
-        \begin{center}
-                \normalfont
-                Supervisor \@principaladviser\\
-        \end{center}\vskip.5in\newpage}
+        \vfill\vskip.5in\newpage}
 
 \def\declpage{%
 \prefacesection{Declaration}
         \begin{center}
         \begin{minipage}{4.5in}
                 \parindent=0pt
-                I confirm that the work contained in this \@rpttype \space project report has been composed solely by myself and has not been accepted in any previous application for a degree. All sources of information have been specifically acknowledged and all verbatim extracts are distinguished by quotation marks. \textcolor{red}{The declaration can be found inside template.cls. Make sure you put your name and adjust the date in the dotted lines!}
+                We confirm that the work contained in this \@rpttype \space report has been composed solely by ourselves as a team of two, based on measurements we personally carried out on the network described within. All sources of information have been specifically acknowledged.
                 \par
-                \vskip 2in
-                 Signed .....XXX XXX..... \hspace{0.2 in} Date .....01/01/1970.....\\
-                 \hspace*{0.4 in} \@author 
+                \vskip 1in
+                 Signed: Tejasvi Shrivastava (2024CS10582) \hspace{0.3in} Date: \@submitdate \\
+                 \vskip 0.3in
+                 Signed: Yashvardhan Singh Chaudhary (2024CS10300) \hspace{0.3in} Date: \@submitdate \\
                  \par
         \end{minipage}%
         \end{center}%
@@ -84,26 +81,20 @@
 
 
 \def\afterabstract{
-%%        \newpage
-        \declpage
-
 \tableofcontents
-        \newpage
         \iftablespage
                 \addvspace{10pt}
                 \listoftables
-                \newpage
         \fi
         \iffigurespage
                 \addvspace{10pt}
                 \listoffigures
-                \newpage
         \fi
     \ifalgorithmspage
                 \addvspace{10pt}
                 \listofalgorithms
-                \newpage
-        \fi}
+        \fi
+        \newpage}
 
         }
 
