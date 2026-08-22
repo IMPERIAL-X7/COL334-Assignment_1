@@ -1,6 +1,6 @@
 %%%%%%%%%%%% MAIN PACKAGES %%%%%%%%%%%%
 \documentclass{template}
-\usepackage{graphicx,parskip,float,array}
+\usepackage{graphicx,parskip,float}
 \usepackage{url,amsmath,amssymb,fancybox,listings,pdfpages,caption,multicol,datetime,rotating, booktabs}
 \usepackage{csquotes}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,10 +31,10 @@
 
 %%%%%%%%%% DOCUMENT CONFIGURATION SETTINGS (ignore unless you really need to change something!) %%%%%%%%%%%%
 \hypersetup{
-    pdftitle    = {COL334 Assignment 1, Parts A and B: Mapping the Machine You Live On},
+    pdftitle    = {COL334 Assignment 1, Part A: Mapping the Machine You Live On},
     pdfauthor   = {Tejasvi Shrivastava, Yashvardhan Singh Chaudhary},
     pdfsubject  = {Computer Networks},
-    pdfkeywords = {traceroute, campus network, RTT, delay, topology, packet capture, Wireshark, anomaly detection},
+    pdfkeywords = {traceroute, campus network, RTT, delay, topology},
     colorlinks  = true, anchorcolor = blue, filecolor = blue, urlcolor = blue,
     linkcolor   = blue, % NOTE: change (blue) to (colIdentifier) to have links within the document in Black
     citecolor   = blue, % NOTE: change (blue) to (colIdentifier) to have citation links within the document in Black
@@ -48,9 +48,6 @@
 \definecolor{colWhite}{rgb}{1,1,1}
 
 \newcommand{\MyHookSign}{\hbox{\ensuremath\hookleftarrow}}
-
-% NOTE: straight double quote, for reproducing Wireshark display filters verbatim
-\newcommand{\qq}{\char`\"}
 
 \newtheorem{Theorem}{Theorem}
 \newtheorem{Proposition}[Theorem]{Proposition}
@@ -95,7 +92,7 @@
 
 \DeclareGraphicsExtensions{.jpg,.png,.gif,.pdf} % When inserting Figures, if the extension of the graphic file is not provided LaTeX will automatically search for the extensions declared above, in the order declared
 
-\title{\huge{Mapping the Machine You Live On}\\[0.3em]\normalsize COL334 Computer Networks: Assignment 1, Parts A and B}
+\title{\huge{Mapping the Machine You Live On}\\[0.3em]\normalsize COL334 Computer Networks: Assignment 1, Part A}
 \author{Tejasvi Shrivastava (2024CS10582) \\ Yashvardhan Singh Chaudhary (2024CS10300)}
 \degreetitle{COL334: Computer Networks}
 \rpttype{assignment}
@@ -112,11 +109,6 @@
 \include{impl/implementation}
 \include{eval/evaluation}
 \include{conclude/conclude}
-
-% Part B: the stakeout
-\include{partb/b1_twodays}
-\include{partb/b2_hunt}
-\include{partb/b3_argue}
 
 \end{document} % NOTE: END of document, nothing after this point
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
