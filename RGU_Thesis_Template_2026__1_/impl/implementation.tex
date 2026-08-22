@@ -100,4 +100,43 @@ the qualitative story (T3 accumulates more transmission delay across more hops) 
 supports; the exact ``4$\times$'' figure is more fragile.
 
 \section{A3.3 -- Watching a Queue Fill}
-\textcolor{red}{\footnotesize TODO: quiet-hour ping to T3 in hand; busy-hour pending. Once both exist: plot RTT vs.\ time for both, state which delay component moved (queuing) vs.\ stayed fixed (propagation/transmission), and whether the queue looks steadily full or spiky. A ``no difference'' result is valid if explained (e.g.\ bottleneck may not be campus-internal).}
+T3 (8.8.8.8) was pinged continuously for 5 minutes (300 packets) at a quiet hour
+(\textcolor{red}{\footnotesize [TODO: exact date]}, 05:30) and again at a busy hour
+(\textcolor{red}{\footnotesize [TODO: exact date/time]}). Figure~\ref{fig:a33plot} plots RTT
+against sequence number for both.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report/images/A3_3_Queue_Saturation.png}
+    \caption[Queue saturation, busy vs.\ quiet hour]{RTT vs.\ packet sequence number, 300 pings to T3, quiet hour (05:30) vs.\ busy hour.}
+    \label{fig:a33plot}
+\end{figure}
+
+\textbf{Which delay component moved, which didn't.} The spikes in both traces -- and there are
+noticeably more of them in the busy-hour trace -- are queuing delay: propagation and
+transmission delay for a fixed-size packet on a fixed path do not vary probe-to-probe, so any
+variation has to be time spent sitting in a router buffer behind other traffic.
+
+What we did not expect is that the two traces sit on different \emph{baselines}: quiet hour
+settles around 48\,ms, busy hour around 27\,ms. Baseline (the floor propagation + transmission +
+fixed processing delay would produce with an empty queue) should not depend on time of day, so a
+20\,ms shift in the floor itself is not something queuing alone explains. The most likely
+account is that the two captures did not use the same path: something changed the route to
+8.8.8.8 between the two windows -- most plausibly Google's anycast routing handing us off to a
+different, physically closer edge for one of the two captures, though we cannot rule out a
+more mundane explanation on our end, such as the device having roamed to a different AP or
+uplink between captures. We do not have a way to confirm which, from ping data alone (that would
+need a traceroute run in each window, which we did not capture at the time) -- but whichever it
+is, it means this pair of captures is confounded for a pure ``same path, different hour'' queuing
+comparison, and the baseline shift itself is arguably the more interesting result of the two.
+
+\textbf{What the shape tells us.} Looking past the baseline shift, the two traces do still differ
+in shape the way the assignment expects: the quiet-hour trace is flat with only a couple of
+isolated spikes (max $\sim$155\,ms), consistent with a queue that is usually empty. The busy-hour
+trace is persistently spiky -- frequent, sharp excursions up to $\sim$190\,ms that return to
+baseline almost immediately rather than decaying gradually. That shape (sharp in, sharp out,
+rather than a sustained elevated floor) reads as bursty cross-traffic -- short bursts that fill a
+buffer momentarily and drain quickly once the burst ends -- rather than the queue being
+continuously close to full. So while we can't cleanly isolate ``busy hour vs.\ quiet hour on the
+same path'', what we can say is that the busy-hour capture, whatever path it took, shows a
+network under frequent transient load rather than sustained congestion.
