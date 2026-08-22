@@ -1,8 +1,9 @@
 \beforeabstract
 \prefacesection{Abstract}
 
-This report covers Part A of COL334 Assignment 1, in which we measure and document the
-network infrastructure of the IIT Delhi campus from the vantage point of our own devices.
+This report covers Parts A and B of COL334 Assignment 1, in which we measure and document the
+network infrastructure of the IIT Delhi campus from the vantage point of our own devices, and
+then turn the same two devices inward and watch what they say on the wire.
 Working as cartographers, we traced routes to a fixed set of targets and to a further set of
 campus and external destinations, isolated the internal (\texttt{10.x.x.x}) hops that recur across
 those traces, and used position, recurrence, and round-trip time to infer the likely role of each
@@ -15,6 +16,17 @@ data was available, a queue-occupancy comparison between busy and quiet hours) t
 propagation, transmission, and queuing delay in practice. Throughout, we have tried to keep the
 line between what we directly measured and what we are inferring explicit, and to flag
 alternative explanations we could not rule out rather than presenting a single tidy story.
+
+Part B reports the traffic-capture half: six ten-minute captures each, over two days and three
+time bands. Round-trip time across those twelve windows shows a large, sustained shift on the
+off-campus path that follows the calendar date rather than the hour and is visible on two
+laptops running different operating systems, while the on-campus evening effect we expected
+turns out to be weak and inconsistent between the two devices, a negative result we report as
+one. We also account for what each machine sent unasked, and hunt the anomalies planted in our
+captures (four in one seed, six in the other), giving each a display filter and the exact
+frame count it returns, including the two flavours we can show are genuinely absent rather than
+merely missed. Finally we argue against our own result: which anomaly would be hardest to detect
+at scale, and what an operator sees that we cannot.
 
 \prefacesection{Acknowledgements}
 We thank the COL334 teaching staff for the assignment design and the shared class map, and

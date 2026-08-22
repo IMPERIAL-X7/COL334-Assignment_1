@@ -1,0 +1,58 @@
+\chapter{Argue Against Yourself}\label{ch:B3}
+
+This chapter answers \textbf{B3} of Part B (8 marks): which anomaly would be hardest to find at
+scale, what the innocent explanation for it would be, and what a network operator can see that we
+cannot.
+
+\section{Hardest to spot at a million times this traffic: the 11-second beacon (A1)}
+
+Not because it hides, but because its harmless twin is everywhere. In a single ten-minute
+capture (\texttt{2024CS10300\_D2\_W2}), this one laptop contacted 63 distinct remote
+addresses and issued 65 DNS queries. Much of that traffic is small, periodic and aimed at a fixed
+port: resolver queries to 10.7.172.202, QUIC keepalives, Google FCM on 5228, Meta XMPP on 5222,
+Delivery Optimization peer chatter. The planted beacon is 10 datagrams of 95 bytes on UDP 20020
+at 11.0-second intervals. Scaled by a million, a detector tuned to ``small UDP datagram, fixed
+destination port, regular interval'' would return essentially every keepalive on the network, and
+the beacon would land somewhere in the middle of that pile, ranked by nothing.
+
+Contrast the SYN burst: 24 SYNs walking consecutive ports in eight seconds is rare enough that a
+coarse rule catches it and the false-positive rate stays survivable. Periodicity is not a scarce
+signal; consecutive-port scanning is. That difference in base rate, not stealth, makes A1 the
+needle and A4 the haystack's only interesting straw.
+
+\section{The innocent case for the beacon}
+
+Every one of those datagrams is answered with an ICMP port-unreachable: nothing is listening. The
+obvious benign reading is a stale endpoint. An application configured against a collector that
+has since been decommissioned (a telemetry agent, a licence heartbeat, a monitoring client)
+will keep firing on its timer indefinitely, because UDP gives it no feedback it is obliged to act
+on. Our own captures contain the genus if not the species: 2024CS10582 sent 21.7\,MB to
+\texttt{excel-telemetry.officeapps.live.com} in one ten-minute window, and 2024CS10300 runs
+\texttt{clientstatesvc.delivery.autodesk.com} and \texttt{go-updater.brave.com} on schedules
+neither of us knowingly started. A beacon to a dead port is what that family of software looks
+like after someone retires a server and forgets a client.
+
+Two things in our capture separate the readings. First, the timing is too good: the ten
+inter-packet gaps span 10.907--10.946\,s, a spread of 39\,ms over 100 seconds. Application timers
+drift with scheduler jitter and system load; this one does not. Second, and more telling, the
+destination was never resolved. Filtering \texttt{dns.a == 168.144.154.92} across all twelve
+captures returns zero frames: the address is hardcoded, not looked up. Legitimate telemetry
+clients almost always reach their collector through a name, because that is how operators move
+and retire them. A hardcoded literal that never backs off despite being rejected ten times
+running is doing something a maintained application would not.
+
+\section{One thing an operator sees that we cannot, and one we see that they cannot}
+
+An operator has base rates. From flow records across campus they could ask how many other
+machines beacon to 168.144.154.92 on UDP 20020, and how many talk to that host at all: the
+question we cannot answer from one laptop, and the one that decides whether the beacon is a lab
+plant or an infection. They would also have known our wireless association throughout. We
+discovered only on the final evening that we were on different SSIDs (\texttt{IITD\_WIFI} and
+\texttt{eduroam}) served by two radios of the \emph{same} access point,
+\texttt{E4:4E:2D:0C:82}; for the previous five windows we simply do not know, and that gap limits
+what we could conclude about the on-campus tail latency in Chapter~\ref{ch:B1}.
+
+We have payload. \texttt{username=mfarooq24\&password=zermxjpc6g} is legible in frame 8975
+because we hold the bytes; an operator watching aggregated flow records sees a short HTTP session
+to port 8080. The same asymmetry recovered the base32 token from the DNS labels. Breadth versus
+depth: they see the population, we see the contents.

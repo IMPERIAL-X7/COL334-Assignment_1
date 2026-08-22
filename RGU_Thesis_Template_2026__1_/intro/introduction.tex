@@ -5,9 +5,10 @@
 Assignment 1 for COL334 (Computer Networks) asks every team to map as much of the IIT Delhi
 campus network as can honestly be measured from an ordinary student device, without
 authentication attempts, SNMP, vulnerability scanners, aggressive scan timing, or scanning of
-anyone else's device. This report covers \textbf{Part A: Cartography}, worth 50 of the 100
-marks for the assignment. Part B (the traffic-capture ``stakeout'') is being completed and
-reported separately by our teammate.
+anyone else's device. This report covers both halves of the assignment: \textbf{Part A:
+Cartography}, worth 50 marks, and \textbf{Part B: The Stakeout}, the traffic-capture half,
+worth 35 marks. Part A is Chapters~\ref{ch:Background}--\ref{ch:Conclusion}; Part B is
+Chapters~\ref{ch:B1}--\ref{ch:B3}.
 
 \section{Team}
 This report was prepared jointly by:
@@ -21,6 +22,13 @@ All measurements in this report were taken under the constraints set out in the 
 handout: no authentication attempts, no SNMP, no exploits or vulnerability scanners, scan
 timing no more aggressive than \texttt{-T2}, and no scanning of devices that might belong to a
 student or staff member rather than to the infrastructure itself.
+
+\section{Capture Windows}
+Part B refers throughout to twelve ten-minute capture windows, six per teammate, labelled
+\texttt{D\emph{d}W\emph{w}} for day \emph{d} and time band \emph{w}: W1 is the morning band
+($\sim$09:00 IST), W2 the afternoon band ($\sim$15:00 IST), and W3 the evening band
+($\sim$21:00 IST). Note that the day labels are collection days, not calendar days: D1W1 and
+D2W3 were both recorded on 22-08, which turns out to matter in Chapter~\ref{ch:B1}.
 
 \section{Fixed Targets}
 Wherever this report refers to ``the targets'', it means the five fixed destinations specified in
@@ -49,6 +57,17 @@ that the rest of the report cites.
 
 \textbf{Chapter~\ref{ch:Conclusion}, Findings.} Three specific, checkable findings about the
 network, each with an alternative explanation we could not rule out.
+
+\textbf{Chapter~\ref{ch:B1}, Two Days, Two Devices (B1).} Twelve ten-minute captures, six per
+teammate across two days and three time bands, compared for RTT to T2 and T3, and for what
+each machine sent when we were not asking it to.
+
+\textbf{Chapter~\ref{ch:B2}, The Hunt (B2).} How many anomalies were planted in each of our
+captures, a display filter and a frame count for every one of them, and why the looser filters
+give the wrong answer.
+
+\textbf{Chapter~\ref{ch:B3}, Argue Against Yourself (B3).} The anomaly that would be hardest to
+find at scale, the innocent explanation for it, and what an operator sees that we do not.
 
 \section{A Note on Honesty}
 The assignment explicitly rewards the distinction between what we observed directly and what
