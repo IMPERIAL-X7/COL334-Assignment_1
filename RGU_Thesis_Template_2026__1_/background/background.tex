@@ -4,17 +4,25 @@ This chapter documents the one part of the network we can see completely: the pa
 own device out to the open Internet.
 
 \section{Device and Access Point}
-Measurements were taken from both teammates' devices. Tejasvi's laptop (Ubuntu) connects over
-Wi-Fi (interface \texttt{wlo1}) from room NB-09, Satpura Hostel; the nearest access point is
-photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving roll
-numbers, date, and location. Yashvardhan connects from a separate hostel AP, photographed as
-Evidence~E-2 \textcolor{red}{\footnotesize [TODO: add Yashvardhan's AP photo with placard]}.
+Measurements were taken from both teammates' devices, both in Satpura Hostel but in different
+rooms. Tejasvi's laptop (Ubuntu) connects over Wi-Fi (interface \texttt{wlo1}) from room NB-09;
+the nearest access point is photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}). Yashvardhan
+connects from room NB-01, also Satpura Hostel; his nearest access point is photographed in
+Evidence~E-2 (Figure~\ref{fig:apphoto2}). Both photos carry a handwritten placard giving roll
+numbers, date, and location.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{report/images/e1_ap_photo.jpeg}
-    \caption[Access point nearest our device]{The access point/wall unit nearest Tejasvi's device during measurement, with evidence placard. See Evidence E-1.}
+    \caption[Access point nearest Tejasvi's device]{The access point/wall unit nearest Tejasvi's device (NB-09) during measurement, with evidence placard. See Evidence E-1.}
     \label{fig:apphoto}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{report/images/e2_yash_ap_photo.jpeg}
+    \caption[Access point nearest Yashvardhan's device]{The access point/wall unit nearest Yashvardhan's device (NB-01, same hostel), with evidence placard. See Evidence E-2.}
+    \label{fig:apphoto2}
 \end{figure}
 
 \section{Finding T1}
@@ -114,14 +122,15 @@ observed.
 implicit:
 
 \emph{The shared gateway.} Both teammates' independent traceroutes hit \textbf{10.184.0.13} at
-hop~1 (Evidence~E-5, E-6), even though they capture from different access points. This is
-consistent with both devices sitting in the same physical campus zone/VLAN, so their routing
-paths merge immediately at the access layer rather than only meeting further in at the campus
-core -- a stronger statement than ``we both eventually reach the same core router'', since it
-places the merge point right at our first hop. We cannot rule out the less interesting
-alternative that 10.184.0.13 is simply a larger shared gateway serving most of the hostel zone
-regardless of specific building/VLAN; distinguishing the two would need a third vantage point on
-a different part of campus that still resolves to the same or a different first hop.
+hop~1 (Evidence~E-5, E-6), even though they capture from different access points in different
+rooms (NB-09 and NB-01). Since both rooms are in the same hostel (Satpura), this is a fairly
+mild result on its own -- one first-hop gateway serving one hostel building is the ordinary
+case, not a surprising one. What it does confirm concretely is that IIT Delhi is not assigning a
+separate default gateway per room or per AP within a hostel; the access-layer merge happens at
+(at least) the building level. We cannot rule out the alternative that 10.184.0.13 in fact serves
+a wider area than just Satpura (multiple hostels sharing one gateway); distinguishing the two
+would need a third vantage point in a different hostel that still resolves to the same first
+hop.
 
 \emph{The ``missing'' hops.} Hops~5 and~8 in Section~1.3's traceroute returned \texttt{* * *}
 (request timeouts). We read this as \emph{not} a routing failure: the surrounding hops (4 and 6;
