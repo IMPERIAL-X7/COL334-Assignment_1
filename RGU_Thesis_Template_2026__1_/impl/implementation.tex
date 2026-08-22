@@ -45,8 +45,10 @@ happen if the path itself were broken.
 \textbf{Propagation delay vs.\ measured minimum.} At $2\times10^8$\,m/s, T2's $\sim$2\,km
 distance implies a propagation delay of about 0.02\,ms, negligible next to the measured
 3.3\,ms minimum, so for a target this close essentially all of the RTT floor is transmission and
-processing delay, not propagation. T5's 12{,}000\,km distance implies a propagation floor of
-about 120\,ms round-trip, yet the measured minimum was 35.6\,ms, well under that floor. The
+processing delay, not propagation. T5 (\texttt{www.mit.edu}), though excluded from
+Figure~\ref{fig:a31plot} to keep that plot's distance axis readable, is the more interesting
+case: its 12{,}000\,km distance implies a propagation floor of about 120\,ms round-trip, yet the
+measured minimum was 35.6\,ms, well under that floor. The
 straightforward reading is that our traffic did not actually travel the full nominal distance:
 \texttt{www.mit.edu} is very likely served to us from a CDN edge node much closer than
 Massachusetts. An alternative we cannot fully rule out is that the geolocation-based distance
