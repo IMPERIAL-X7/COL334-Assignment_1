@@ -46,7 +46,15 @@ E4:4E:2D:0C:82:60  IITD_WIFI          2412 MHz  1     74
 Supports: Chapter~\ref{ch:Design}, Section A2.2 wireless survey table. (Note: the raw scan
 carries more BSSIDs per site than Table~2.2, since each physical AP was broadcasting the full
 MBSSID set on both bands here; Table~2.2 already reflects this in its ``how many physical APs''
-count.)
+count.) This same survey data was subsequently entered into the shared class map
+(Figure~\ref{fig:apcontri}), so this item also supports Section A2.3's contribution count.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{report/images/AP_contri_1.png}
+    \caption[Wireless survey rows in the shared class map]{Our wireless-survey rows (Evidence E-3) entered into \texttt{COL334\_A1\_Campus\_Map.xlsx}, spanning all three surveyed locations.}
+    \label{fig:apcontri}
+\end{figure}
 
 \textbf{E-4 -- spreadsheet}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:30\quad Where: NB-09, Satpura Hostel\\
@@ -59,7 +67,25 @@ underlying Table~\ref{tab:hophunt}.
     \caption[Raw router-hunt CSV]{Raw \texttt{A2\_router\_table.csv} data underlying Table~\ref{tab:hophunt} -- more hops appear here than in the table; the extras are single-appearance transit nodes on paths to sites not otherwise discussed (e.g.\ facebook.com, x.com) and were left out of Table~\ref{tab:hophunt} to keep it to the destinations this report actually analyses.}
     \label{fig:e4csv}
 \end{figure}
-Supports: Chapter~\ref{ch:Design}, Table~\ref{tab:hophunt} and Figure~\ref{fig:topology}.
+
+This same router data was entered into the shared class map as our A2.3 contribution, split
+between internal (Figure~\ref{fig:routercontriint}) and external/CDN (Figure~\ref{fig:routercontriext}) hops:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{report/images/internal_router_contri.png}
+    \caption[Internal router rows in the shared class map]{Our internal-hop rows in \texttt{COL334\_A1\_Campus\_Map.xlsx}.}
+    \label{fig:routercontriint}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{report/images/external_router_contri.png}
+    \caption[External/CDN router rows in the shared class map]{Our external transit and CDN-edge rows in \texttt{COL334\_A1\_Campus\_Map.xlsx}.}
+    \label{fig:routercontriext}
+\end{figure}
+Supports: Chapter~\ref{ch:Design}, Table~\ref{tab:hophunt}, Figure~\ref{fig:topology}, and
+Section A2.3 (contribution count).
 
 \textbf{E-5 -- command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 16:15\quad Where: NB-09, Satpura Hostel\\
@@ -273,8 +299,22 @@ rtt min/avg/max/mdev = 45.368/47.889/52.012/1.350 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a32plot}, T3 regression.
 
-\textbf{E-15 -- screenshot}\\
-Who: \textcolor{red}{[TODO]}\quad When: \textcolor{red}{[TODO]}\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: \textcolor{red}{[TODO: screenshot of the shared class spreadsheet showing our
-contributed rows and the two other teams' rows we verified]}.\\
-Supports: Chapter~\ref{ch:Design}, Section A2.3.
+\textbf{E-15 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: \textcolor{red}{[TODO]}\quad Where: NB-09, Satpura Hostel\\
+Artefact: independent \texttt{traceroute -n} + \texttt{ping -c 10} verification of two rows
+submitted by team 2024CS50261+2024CS51073, both returning full timeouts:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report/images/e15_1_verify_10.255.221.1.png}
+    \caption[Verification attempt, 10.255.221.1]{Row 1092 (10.255.221.1, claimed hop 11) -- 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
+    \label{fig:e15a}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report/images/e15_2_verify_10.255.237.94.png}
+    \caption[Verification attempt, 10.255.237.94]{Row 1096 (10.255.237.94, claimed hop 7) -- 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
+    \label{fig:e15b}
+\end{figure}
+Supports: Chapter~\ref{ch:Design}, Section A2.3 (verification).

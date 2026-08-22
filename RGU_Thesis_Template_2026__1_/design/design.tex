@@ -141,4 +141,38 @@ neighbouring channel-1 and channel-6 networks -- but since it is a personal devi
 scan or otherwise investigate further under the assignment's rules.
 
 \section{A2.3 -- The Class Map}
-\textcolor{red}{\footnotesize TODO: add rows to \texttt{COL334\_A1\_Campus\_Map.xlsx}, verify two other teams' rows (confirmed/contradicted/couldn't reach), summarise here.}
+Our router-hunt and wireless-survey data (Sections 2.1--2.2) were added to the shared
+\texttt{COL334\_A1\_Campus\_Map.xlsx}, and we independently verified two rows submitted by
+another team.
+
+\textbf{Contributions.} We contributed 33 previously-undocumented infrastructure IPs to the
+shared map (Evidence~E-3, E-4, which already cover the underlying wireless-survey and
+router-hunt data this was built from): the internal aggregation-layer routers already listed in
+Table~\ref{tab:hophunt} (e.g.\ \texttt{10.254.236.x}), plus a further set of external transit and
+CDN-edge addresses seen only on paths to non-campus destinations -- NKN peering
+(\texttt{10.1.200.137}), Meta's peering/transit edge, and various CDN edges for
+\texttt{mit.edu}, \texttt{google.com}, and others -- that we left out of Table~\ref{tab:hophunt}
+itself to keep it focused on the destinations this report discusses in depth, but which are now
+part of the class-wide picture.
+
+\textbf{Verification.} We selected two rows submitted by another team
+(2024CS50261+2024CS51073) to check independently from our own vantage point:
+
+\begin{itemize}
+    \item Row 1092 -- \texttt{10.255.221.1}, claimed at hop~11.
+    \item Row 1096 -- \texttt{10.255.237.94}, claimed at hop~7.
+\end{itemize}
+
+Both came back \textbf{couldn't reach}: a fresh \texttt{traceroute -n} and \texttt{ping -c 10} to
+each IP, run directly from the Satpura access layer, returned 100\% timeouts/packet loss across
+all 30 traceroute hops and all 10 pings (Evidence~E-15). We read this as more likely an
+architectural access-control choice than a sign the other team's row is wrong: these could be
+core routers that simply do not answer unsolicited ICMP originating from student-subnet IP space
+at all (as distinct from the hop~5/hop~8 case in Chapter~\ref{ch:Background}, which only
+suppressed TTL-exceeded replies while still forwarding transit traffic -- here nothing came back
+at all, including to packets that were never expected to traverse these IPs as intermediate
+hops). The other explanation we can't rule out is more mundane: the other team's claimed
+hop-position or IP could simply be a typo or a stale reading from when that address briefly
+appeared in one of their traces, in which case ``couldn't reach'' would reflect an error in the
+source row rather than anything about the router's configuration. We have no way to distinguish
+the two without asking the submitting team what they saw at the time.
