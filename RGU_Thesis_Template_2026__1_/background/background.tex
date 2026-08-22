@@ -4,15 +4,16 @@ This chapter documents the one part of the network we can see completely: the pa
 own device out to the open Internet.
 
 \section{Device and Access Point}
-Measurements in this section were taken from a laptop running Ubuntu, connected over Wi-Fi
-(interface \texttt{wlo1}) from room NB-09, Satpura Hostel. The access point nearest us is
-photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving our
-roll numbers, the date, and the location.
+Measurements were taken from both teammates' devices. Tejasvi's laptop (Ubuntu) connects over
+Wi-Fi (interface \texttt{wlo1}) from room NB-09, Satpura Hostel; the nearest access point is
+photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}), with a handwritten placard giving roll
+numbers, date, and location. Yashvardhan connects from a separate hostel AP, photographed as
+Evidence~E-2 \textcolor{red}{\footnotesize [TODO: add Yashvardhan's AP photo with placard]}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{report/images/e1_ap_photo.jpeg}
-    \caption[Access point nearest our device]{The access point/wall unit nearest our device during measurement, with evidence placard. See Evidence E-1.}
+    \caption[Access point nearest our device]{The access point/wall unit nearest Tejasvi's device during measurement, with evidence placard. See Evidence E-1.}
     \label{fig:apphoto}
 \end{figure}
 
@@ -39,12 +40,14 @@ that 10.184.0.1 simply never responds to traceroute probes (rate-limited or filt
 still being the true first hop -- we have no way to distinguish ``different device'' from ``same
 device, doesn't reply on this address'' without further tooling that is out of scope here. For
 the rest of this report we follow the handout's implicit intent and use \textbf{10.184.0.13} as
-T1, since that is the address that is consistently and observably our first hop.
+T1, since that is the address that is consistently and observably our first hop (Evidence~E-5;
+Yashvardhan's equivalent \texttt{ip route}/traceroute output, Evidence~E-6, confirms the same
+address).
 
 \section{Path to the Boundary}
 A traceroute to an external destination not previously used elsewhere in this report
 (\texttt{www.codechef.com}, chosen to avoid double-counting a target already used for T1--T5)
-gives:
+gives (Evidence~E-7):
 \footnotesize
 \begin{verbatim}
  1  10.184.0.13      4.929 ms  4.856 ms  4.816 ms
@@ -95,7 +98,41 @@ upstream(s), and a lot of what looks like ``the open Internet'' from here is act
 CDN edge rather than the origin server.
 
 \section{Diagram: Device to Internet}
-\textcolor{red}{\footnotesize TODO: one diagram (Graphviz, style of Figure~\ref{fig:topology}), built from the data above: device $\to$ wlo1 $\to$ AP (E-1) $\to$ 10.184.0.13 (T1) $\to$ 10.255.109.100 $\to$ 10.255.107.3 $\to$ 10.119.233.65 $\to$ [10.184.0.1 aside, see discrepancy note] $\to$ 10.119.234.162 $\to$ \textbf{boundary} $\to$ 14.143.159.145 (Tata) $\to$ 121.240.255.30 (Tata) $\to$ 104.23.231.x (Cloudflare), with a dashed ``here my evidence stops'' line after the third public hop and everything past it in grey/\emph{inferred}. Both teammates' paths side by side -- need Yashvardhan's equivalent data to add his side.}
+Figure~\ref{fig:a14diagram} draws both teammates' paths from device to the open Internet,
+merging at the shared gateway, following the internal core/egress path, crossing the IIT Delhi
+boundary, and stopping at a dashed line past which everything is inferred rather than directly
+observed.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.62\textwidth]{report/images/A1.4.png}
+    \caption[Device-to-Internet path diagram]{Both teammates' device-to-Internet paths, merging at the shared T1 gateway. Evidence tags reference Chapter~\ref{ch:Evaluation}; everything past the dashed line is inferred, not directly observed.}
+    \label{fig:a14diagram}
+\end{figure}
+
+\textbf{Analytical notes.} Two things in this diagram are worth spelling out rather than leaving
+implicit:
+
+\emph{The shared gateway.} Both teammates' independent traceroutes hit \textbf{10.184.0.13} at
+hop~1 (Evidence~E-5, E-6), even though they capture from different access points. This is
+consistent with both devices sitting in the same physical campus zone/VLAN, so their routing
+paths merge immediately at the access layer rather than only meeting further in at the campus
+core -- a stronger statement than ``we both eventually reach the same core router'', since it
+places the merge point right at our first hop. We cannot rule out the less interesting
+alternative that 10.184.0.13 is simply a larger shared gateway serving most of the hostel zone
+regardless of specific building/VLAN; distinguishing the two would need a third vantage point on
+a different part of campus that still resolves to the same or a different first hop.
+
+\emph{The ``missing'' hops.} Hops~5 and~8 in Section~1.3's traceroute returned \texttt{* * *}
+(request timeouts). We read this as \emph{not} a routing failure: the surrounding hops (4 and 6;
+7 and 9) all reply with plausible, monotonically-increasing RTTs, which would not happen if a
+hop in between were actually dropping our packets. The more likely explanation is that these
+specific routers are configured not to generate ICMP time-exceeded replies at all -- a common
+practice for masking internal infrastructure -- meaning our packets successfully transited them
+on the way to the next hop, but the routers themselves declined to identify themselves. The
+alternative we can't fully rule out is transient packet loss specific to the one probe we sent
+per hop; re-running the traceroute with more probes per hop would help distinguish ``never
+replies'' from ``dropped that particular probe''.
 
 \section{Evidence Tags}
 Every element in the final diagram must carry an evidence tag (E-1, E-2, \ldots) referencing
