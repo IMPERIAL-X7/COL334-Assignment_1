@@ -45,21 +45,23 @@ T1, since that is the address that is consistently and observably our first hop.
 A traceroute to an external destination not previously used elsewhere in this report
 (\texttt{www.codechef.com}, chosen to avoid double-counting a target already used for T1--T5)
 gives:
-\begin{quote}\ttfamily\footnotesize
-\begin{tabbing}
- 1\quad \= 10.184.0.13\quad \= 4.929 ms  4.856 ms  4.816 ms \\
- 2\> 10.255.109.100\> 4.761 ms  4.732 ms  4.702 ms \\
- 3\> 10.255.107.3\> 4.679 ms  4.649 ms  4.622 ms \\
- 4\> 10.119.233.65\> 4.590 ms  4.560 ms  4.531 ms \\
- 5\> * * *\> (unresponsive) \\
- 6\> 10.119.234.162\> 8.483 ms  7.723 ms  7.581 ms \\
- 7\> * 14.143.159.145 11.753 ms *\> (first public hop) \\
- 8\> * * *\> (unresponsive) \\
- 9\> 121.240.255.30\> 11.581 ms  11.539 ms * \\
-10\> 104.23.231.30 17.261 ms * 104.23.231.11\> 9.883 ms \\
-11\> 172.67.75.52\> 9.713 ms  8.882 ms  8.770 ms \quad (destination)
-\end{tabbing}
-\end{quote}
+\footnotesize
+\begin{verbatim}
+ 1  10.184.0.13      4.929 ms  4.856 ms  4.816 ms
+ 2  10.255.109.100   4.761 ms  4.732 ms  4.702 ms
+ 3  10.255.107.3     4.679 ms  4.649 ms  4.622 ms
+ 4  10.119.233.65    4.590 ms  4.560 ms  4.531 ms
+ 5  * * *
+ 6  10.119.234.162   8.483 ms  7.723 ms  7.581 ms
+ 7  * 14.143.159.145 11.753 ms *
+ 8  * * *
+ 9  121.240.255.30   11.581 ms  11.539 ms *
+10  104.23.231.30 17.261 ms * 104.23.231.11 9.883 ms
+11  172.67.75.52     9.713 ms  8.882 ms  8.770 ms
+\end{verbatim}
+\normalsize
+Hop~5 and hop~8 are unresponsive; hop~7 is the first public IP (first boundary
+crossing); hop~11 is the destination itself.
 
 Hops 1--6 are all internal (\texttt{10.x.x.x}) and match the core/egress path already identified
 in Table~\ref{tab:hophunt} (Chapter~\ref{ch:Design}): local gateway, the two core distribution
@@ -71,7 +73,8 @@ with a plausible, monotonically-consistent RTT. The first \emph{public} IP appea
 \centering
 \caption{Whois lookups for the first public hops after our gateway.}
 \label{tab:whoispublic}
-\begin{tabular}{@{}clll@{}}
+\footnotesize
+\begin{tabular}{@{}cp{2.7cm}p{5.8cm}p{2.8cm}@{}}
 \toprule
 Hop & IP & Owner (whois) & Role \\
 \midrule

@@ -10,17 +10,20 @@ location) -- and are not independently verified against ground truth.
 \centering
 \caption{Aggregate RTT statistics, 50 packets per target.}
 \label{tab:rttstats}
-\begin{tabular}{@{}llccc@{}}
+\footnotesize
+\begin{tabular}{@{}p{2.6cm}p{2.6cm}cccc@{}}
 \toprule
-Target (role) & Resolved IP & Est. distance & Min / Avg / Max RTT (ms) \\
+Target (role) & Resolved IP & Est. distance & Min RTT & Avg RTT & Max RTT \\
 \midrule
-T1 (local gateway) & 10.184.0.13 & $<$0.1 km & 3.904 / 8.891 / 96.290 \\
-T2 (campus target) & www.iitd.ac.in & $\sim$2.0 km & 3.315 / 7.489 / 14.110 \\
-T3 (regional DNS) & 8.8.8.8 & $\sim$20.0 km & 42.824 / 49.859 / 119.830 \\
-T4 (IIT Bombay) & www.iitb.ac.in & $\sim$1100 km & N/A (100\% loss) \\
-T5 (global target) & www.mit.edu & nominal 12{,}000 km & 35.596 / 51.145 / 247.982 \\
+T1 (local gateway) & 10.184.0.13 & $<$0.1 km & 3.904 & 8.891 & 96.290 \\
+T2 (campus target) & www.iitd.ac.in & $\sim$2.0 km & 3.315 & 7.489 & 14.110 \\
+T3 (regional DNS) & 8.8.8.8 & $\sim$20.0 km & 42.824 & 49.859 & 119.830 \\
+T4 (IIT Bombay) & www.iitb.ac.in & $\sim$1100 km & \multicolumn{3}{c}{N/A -- 100\% packet loss} \\
+T5 (global target) & www.mit.edu & nominal 12{,}000 km & 35.596 & 51.145 & 247.982 \\
 \bottomrule
 \end{tabular}
+
+{\footnotesize All RTT values in ms.}
 \end{table}
 
 T4 returned 100\% packet loss across all 50 probes. We read this as ICMP being firewalled at or
