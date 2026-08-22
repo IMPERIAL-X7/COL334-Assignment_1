@@ -42,10 +42,10 @@ one below) shows hop~1 as \textbf{10.184.0.13}, not 10.184.0.1. Both addresses a
 \texttt{/19}, so our best explanation is that 10.184.0.1 is a virtual/first-hop address (e.g.\ a
 shared gateway IP fronting several access switches, possibly via VRRP-style redundancy), while
 10.184.0.13 is the specific physical router interface that actually decrements TTL and replies
-with the ICMP time-exceeded message -- i.e.\ our packets' first real Layer-3 hop is a different,
+with the ICMP time-exceeded message, i.e.\ our packets' first real Layer-3 hop is a different,
 specific box behind the advertised gateway address. We cannot fully rule out the alternative
 that 10.184.0.1 simply never responds to traceroute probes (rate-limited or filtered ICMP) while
-still being the true first hop -- we have no way to distinguish ``different device'' from ``same
+still being the true first hop; we have no way to distinguish ``different device'' from ``same
 device, doesn't reply on this address'' without further tooling that is out of scope here. For
 the rest of this report we follow the handout's implicit intent and use \textbf{10.184.0.13} as
 T1, since that is the address that is consistently and observably our first hop (Evidence~E-5;
@@ -72,7 +72,11 @@ gives (Evidence~E-7):
 \end{verbatim}
 \normalsize
 Hop~5 and hop~8 are unresponsive; hop~7 is the first public IP (first boundary
-crossing); hop~11 is the destination itself.
+crossing); hop~11 is the destination itself. Note that hop~10 returns two different IP
+addresses on the same line (\texttt{104.23.231.30} and \texttt{104.23.231.11}), indicating the
+upstream network is actively load-balancing our ICMP probes across multiple Cloudflare edge
+servers via Equal-Cost Multi-Path (ECMP) routing, rather than all three probes hitting the same
+device.
 
 Hops 1--6 are all internal (\texttt{10.x.x.x}) and match the core/egress path already identified
 in Table~\ref{tab:hophunt} (Chapter~\ref{ch:Design}): local gateway, the two core distribution
@@ -99,7 +103,7 @@ Hop & IP & Owner (whois) & Role \\
 This is where our traffic crosses the IIT Delhi boundary: hop~6 (10.119.234.162, the internal
 egress gateway) hands off to hop~7, the first Tata Communications address. From there it stays
 on Tata's network (hop~9) before landing on a Cloudflare edge node (hop~10) that terminates
-\texttt{www.codechef.com} -- consistent with the CDN-edge explanation we gave in
+\texttt{www.codechef.com}, consistent with the CDN-edge explanation we gave in
 Chapter~\ref{ch:Implementation} for why T5's measured minimum RTT undercut its nominal
 geographic distance: Tata Communications appears to be (at least one of) our commercial
 upstream(s), and a lot of what looks like ``the open Internet'' from here is actually a nearby
@@ -124,7 +128,7 @@ implicit:
 \emph{The shared gateway.} Both teammates' independent traceroutes hit \textbf{10.184.0.13} at
 hop~1 (Evidence~E-5, E-6), even though they capture from different access points in different
 rooms (NB-09 and NB-01). Since both rooms are in the same hostel (Satpura), this is a fairly
-mild result on its own -- one first-hop gateway serving one hostel building is the ordinary
+mild result on its own: one first-hop gateway serving one hostel building is the ordinary
 case, not a surprising one. What it does confirm concretely is that IIT Delhi is not assigning a
 separate default gateway per room or per AP within a hostel; the access-layer merge happens at
 (at least) the building level. We cannot rule out the alternative that 10.184.0.13 in fact serves
@@ -136,8 +140,8 @@ hop.
 (request timeouts). We read this as \emph{not} a routing failure: the surrounding hops (4 and 6;
 7 and 9) all reply with plausible, monotonically-increasing RTTs, which would not happen if a
 hop in between were actually dropping our packets. The more likely explanation is that these
-specific routers are configured not to generate ICMP time-exceeded replies at all -- a common
-practice for masking internal infrastructure -- meaning our packets successfully transited them
+specific routers are configured not to generate ICMP time-exceeded replies at all (a common
+practice for masking internal infrastructure), meaning our packets successfully transited them
 on the way to the next hop, but the routers themselves declined to identify themselves. The
 alternative we can't fully rule out is transient packet loss specific to the one probe we sent
 per hop; re-running the traceroute with more probes per hop would help distinguish ``never

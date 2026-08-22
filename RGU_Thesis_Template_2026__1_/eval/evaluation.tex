@@ -4,19 +4,19 @@ The assignment requires 10--15 numbered evidence items, E-1 onward with no gaps,
 who took it, when, where, the artefact itself, and which map element/table row/plot it
 supports.
 
-\textbf{E-1 -- photo}\\
+\textbf{E-1: photo}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 03:30\quad Where: NB-09, Satpura Hostel\\
-Artefact: Figure~\ref{fig:apphoto} -- photo of the access point nearest Tejasvi's device, with
+Artefact: Figure~\ref{fig:apphoto}, photo of the access point nearest Tejasvi's device, with
 handwritten placard (roll numbers, date, location).\\
 Supports: Chapter~\ref{ch:Background}, Section~``Device and Access Point''; Figure~\ref{fig:a14diagram}.
 
-\textbf{E-2 -- photo}\\
+\textbf{E-2: photo}\\
 Who: Yashvardhan Singh Chaudhary (2024CS10300)\quad When: 22-08-2026, 18:59\quad Where: NB-01, Satpura Hostel\\
-Artefact: Figure~\ref{fig:apphoto2} -- photo of the access point nearest Yashvardhan's device,
+Artefact: Figure~\ref{fig:apphoto2}, photo of the access point nearest Yashvardhan's device,
 with handwritten placard (roll numbers, date, location).\\
 Supports: Chapter~\ref{ch:Background}, Section~``Device and Access Point''; Figure~\ref{fig:a14diagram}.
 
-\textbf{E-3 -- survey}\\
+\textbf{E-3: survey}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 05:27 (Satpura), with Lecture Hall
 and Library scans following the same session\quad Where: Satpura Hostel, Lecture Hall, Library\\
 Artefact: verbatim \texttt{nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi} output, all three
@@ -56,15 +56,15 @@ count.) This same survey data was subsequently entered into the shared class map
     \label{fig:apcontri}
 \end{figure}
 
-\textbf{E-4 -- spreadsheet}\\
+\textbf{E-4: spreadsheet}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:30\quad Where: NB-09, Satpura Hostel\\
-Artefact: Figure~\ref{fig:e4csv} -- \texttt{A2\_router\_table.csv}, the raw per-trace hop data
+Artefact: Figure~\ref{fig:e4csv}: \texttt{A2\_router\_table.csv}, the raw per-trace hop data
 underlying Table~\ref{tab:hophunt}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{report/images/e4_router_csv.png}
-    \caption[Raw router-hunt CSV]{Raw \texttt{A2\_router\_table.csv} data underlying Table~\ref{tab:hophunt} -- more hops appear here than in the table; the extras are single-appearance transit nodes on paths to sites not otherwise discussed (e.g.\ facebook.com, x.com) and were left out of Table~\ref{tab:hophunt} to keep it to the destinations this report actually analyses.}
+    \caption[Raw router-hunt CSV]{Raw \texttt{A2\_router\_table.csv} data underlying Table~\ref{tab:hophunt}. More hops appear here than in the table; the extras are single-appearance transit nodes on paths to sites not otherwise discussed (e.g.\ facebook.com, x.com) and were left out of Table~\ref{tab:hophunt} to keep it to the destinations this report actually analyses.}
     \label{fig:e4csv}
 \end{figure}
 
@@ -87,7 +87,7 @@ between internal (Figure~\ref{fig:routercontriint}) and external/CDN (Figure~\re
 Supports: Chapter~\ref{ch:Design}, Table~\ref{tab:hophunt}, Figure~\ref{fig:topology}, and
 Section A2.3 (contribution count).
 
-\textbf{E-5 -- command output}\\
+\textbf{E-5: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 16:15\quad Where: NB-09, Satpura Hostel\\
 Artefact: \texttt{ip addr} (confirming interface \texttt{wlo1}) and
 \texttt{traceroute -n www.codechef.com}, verbatim:
@@ -108,11 +108,11 @@ traceroute to www.codechef.com (172.67.75.52), 30 hops max, 60 byte packets
 11  172.67.75.52    16.622 ms  4.546 ms  14.703 ms
 \end{verbatim}
 \end{quote}
-(This is a separate run from the one quoted in Section~1.3 -- hop sequence and roles are
+(This is a separate run from the one quoted in Section~1.3; hop sequence and roles are
 identical, RTTs differ run-to-run as expected.)\\
 Supports: Chapter~\ref{ch:Background}, Section~``Finding T1''; Figure~\ref{fig:a14diagram} (shared-gateway note).
 
-\textbf{E-6 -- command output}\\
+\textbf{E-6: command output}\\
 Who: Yashvardhan Singh Chaudhary (2024CS10300)\quad When: 22-08-2026, 16:25\quad Where: NB-01, Satpura Hostel\\
 Artefact: \texttt{ipconfig} and \texttt{tracert -d www.codechef.com}, run on Windows, verbatim:
 \begin{quote}\ttfamily\footnotesize
@@ -142,11 +142,11 @@ Trace complete.
 This independently confirms two things from a second device on a second OS: the same
 \textbf{10.184.0.1} DHCP gateway / \textbf{10.184.0.13} first-hop discrepancy noted in
 Section~1.2, and the identical hop-5/hop-8 timeout pattern discussed in the diagram's analytical
-notes -- since both teammates see the same two hops go silent independently, a probe-specific
+notes: since both teammates see the same two hops go silent independently, a probe-specific
 fluke on one device is less likely than a deliberate no-reply configuration on those routers.\\
 Supports: Chapter~\ref{ch:Background}, Section~``Finding T1''; Figure~\ref{fig:a14diagram} (shared-gateway note).
 
-\textbf{E-7 -- command output / lookup}\\
+\textbf{E-7: command output / lookup}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:35\quad Where: NB-09, Satpura Hostel\\
 Artefact: \texttt{whois} lookups for the four public hops in Table~\ref{tab:whoispublic}, verbatim:
 \begin{quote}\ttfamily\footnotesize
@@ -173,7 +173,7 @@ OrgName:        Cloudflare, Inc.
 \end{quote}
 Supports: Chapter~\ref{ch:Background}, Section A1.3, Table~\ref{tab:whoispublic}.
 
-\textbf{E-8 -- log}\\
+\textbf{E-8: log}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: quiet hour, 20-08-2026, 05:40\quad Where: NB-09, Satpura Hostel\\
 Artefact: 300-packet continuous ping to T3, quiet hour, first/last 10 lines:
 \begin{quote}\ttfamily\footnotesize
@@ -192,7 +192,7 @@ rtt min/avg/max/mdev = 44.269/48.832/154.554/10.852 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a33plot}.
 
-\textbf{E-9 -- log}\\
+\textbf{E-9: log}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: busy hour, 22-08-2026, 15:11\quad Where: NB-09, Satpura Hostel\\
 Artefact: 300-packet continuous ping to T3, busy hour, first/last 10 lines:
 \begin{quote}\ttfamily\footnotesize
@@ -211,7 +211,7 @@ rtt min/avg/max/mdev = 24.356/31.706/192.284/17.041 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a33plot}.
 
-\textbf{E-10 -- command output}\\
+\textbf{E-10: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:35\quad Where: NB-09, Satpura Hostel\\
 Artefact: 50-packet ping summaries for T1 and T2:
 \begin{quote}\ttfamily\footnotesize
@@ -229,10 +229,10 @@ rtt min/avg/max/mdev = 3.315/7.489/14.110/2.716 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Figure~\ref{fig:a31plot}.
 
-\textbf{E-11 -- command output}\\
+\textbf{E-11: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 20-08-2026, 04:50\quad Where: NB-09, Satpura Hostel\\
-Artefact: 50-packet ping summaries for T3 and T5 (note the minor packet loss on both -- 2\% and
-4\% respectively -- not previously called out in Chapter~3):
+Artefact: 50-packet ping summaries for T3 and T5 (note the minor packet loss on both, 2\% and
+4\% respectively, not previously called out in Chapter~3):
 \begin{quote}\ttfamily\footnotesize
 \begin{verbatim}
 > ping -c 50 -s 64 8.8.8.8
@@ -248,7 +248,7 @@ rtt min/avg/max/mdev = 35.596/51.145/247.982/36.326 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Figure~\ref{fig:a31plot}.
 
-\textbf{E-12 -- command output}\\
+\textbf{E-12: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 20-08-2026, 04:50\quad Where: NB-09, Satpura Hostel\\
 Artefact: 100\% packet loss for T4:
 \begin{quote}\ttfamily\footnotesize
@@ -261,7 +261,7 @@ PING www.iitb.ac.in (103.21.124.133) 64(92) bytes of data.
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Section A3.1 firewall-drop discussion.
 
-\textbf{E-13 -- command output}\\
+\textbf{E-13: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 20:00\quad Where: NB-09, Satpura Hostel\\
 Artefact: packet-size sweep summaries for T1 (64/256/512/1024/1400 bytes):
 \begin{quote}\ttfamily\footnotesize
@@ -280,7 +280,7 @@ rtt min/avg/max/mdev = 3.202/6.025/11.310/1.969 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a32plot}, T1 regression.
 
-\textbf{E-14 -- command output}\\
+\textbf{E-14: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 20:15\quad Where: NB-09, Satpura Hostel\\
 Artefact: packet-size sweep summaries for T3 (64/256/512/1024/1400 bytes):
 \begin{quote}\ttfamily\footnotesize
@@ -299,7 +299,7 @@ rtt min/avg/max/mdev = 45.368/47.889/52.012/1.350 ms
 \end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a32plot}, T3 regression.
 
-\textbf{E-15 -- command output}\\
+\textbf{E-15: command output}\\
 Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 20:43\quad Where: NB-09, Satpura Hostel\\
 Artefact: independent \texttt{traceroute -n} + \texttt{ping -c 10} verification of two rows
 submitted by team 2024CS50261+2024CS51073, both returning full timeouts:
@@ -307,14 +307,14 @@ submitted by team 2024CS50261+2024CS51073, both returning full timeouts:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{report/images/e15_1_verify_10.255.221.1.png}
-    \caption[Verification attempt, 10.255.221.1]{Row 1092 (10.255.221.1, claimed hop 11) -- 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
+    \caption[Verification attempt, 10.255.221.1]{Row 1092 (10.255.221.1, claimed hop 11): 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
     \label{fig:e15a}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{report/images/e15_2_verify_10.255.237.94.png}
-    \caption[Verification attempt, 10.255.237.94]{Row 1096 (10.255.237.94, claimed hop 7) -- 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
+    \caption[Verification attempt, 10.255.237.94]{Row 1096 (10.255.237.94, claimed hop 7): 30/30 traceroute hops and 10/10 pings timed out. Result: couldn't reach.}
     \label{fig:e15b}
 \end{figure}
 Supports: Chapter~\ref{ch:Design}, Section A2.3 (verification).

@@ -1,6 +1,6 @@
 \chapter{Campus Topology}\label{ch:Design}
 
-\section{A2.1 -- The Router Hunt}
+\section{A2.1: The Router Hunt}
 Traceroutes were run to at least 10--15 destinations: campus services
 (\texttt{www.iitd.ac.in}, \texttt{moodle}, \texttt{library}, \texttt{webmail},
 \texttt{cse}, \texttt{am}, \texttt{chemical}, \texttt{design}, \texttt{dms}, \texttt{textile},
@@ -42,10 +42,10 @@ Hop IP & Representative traces (count) & Pos. & Avg RTT (ms) & Best guess at rol
 \end{tabular}
 \end{table}
 
-\textcolor{red}{\footnotesize Note: position/RTT reconstructed from a flattened source table -- verify against the original CSV before final submission (likely viva material).}
+\textcolor{red}{\footnotesize Note: position/RTT reconstructed from a flattened source table; verify against the original CSV before final submission (likely viva material).}
 
 A few observations follow directly from the table. \texttt{10.184.0.13} appears at position~1 in
-every trace we ran -- consistent with it being our own default gateway rather than a shared
+every trace we ran, consistent with it being our own default gateway rather than a shared
 campus device. The pair \texttt{10.255.109.100} / \texttt{10.255.107.3} / \texttt{10.119.233.65}
 appears in every trace to an external commercial destination but never in traces to
 \texttt{www.iitd.ac.in} or other campus services, which is the signature of a core/egress path
@@ -70,7 +70,7 @@ observed adjacencies (which hop directly followed which, across all traces) as e
     \label{fig:topology}
 \end{figure}
 
-\section{A2.2 -- The Wireless Layer}
+\section{A2.2: The Wireless Layer}
 A Wi-Fi survey was run from three locations on campus using \texttt{nmcli}, recording every
 broadcast SSID together with its BSSID, band, channel, and signal strength.
 
@@ -117,30 +117,30 @@ Library & 5C:A6:2D:6F:F8:E1 & IITD\_Secure\_GUEST & 2.4 GHz & 1 & 39 \\
 \end{table}
 
 \subsection{Reading the Survey}
-\textbf{How many physical APs.} SSIDs are not access points -- a single radio commonly
+\textbf{How many physical APs.} SSIDs are not access points: a single radio commonly
 broadcasts several SSIDs from one MAC block (multiple BSSID / MBSSID), differing only in the
 last hex digit. Grouping BSSIDs by their shared prefix rather than counting SSID rows gives 5
-distinct physical enterprise APs in Satpura, 3 in the Lecture Hall, and 4 in the Library --
+distinct physical enterprise APs in Satpura, 3 in the Lecture Hall, and 4 in the Library,
 noticeably fewer than the raw broadcast count.
 
 \textbf{Global vs.\ localised SSIDs.} \texttt{eduroam}, \texttt{IITD\_WIFI}, and
 \texttt{IITD\_Secure\_GUEST} appear in all three locations and are evidently provisioned
 campus-wide. \texttt{IITD\_IOT} appears in both academic locations (Lecture Hall, Library) but
 not once in the Satpura data, which reads as a deliberate choice to keep IoT infrastructure out
-of residential buildings rather than a coverage gap -- though we cannot rule out that our single
+of residential buildings rather than a coverage gap, though we cannot rule out that our single
 Satpura vantage point simply missed an IITD\_IOT radio elsewhere in the hostel. Personal
 hotspots (\texttt{realme P2 Pro 5G}, \texttt{rjnish}, the two unnamed hex-string SSIDs in the
 Lecture Hall) are, as expected, seen at exactly one location each and nowhere else.
 
 \textbf{Channel plan.} Across all three surveys, zero networks were observed on 2.4\,GHz
-channels 3, 4, or 8 -- every enterprise AP sits on 1, 6, or 11, the three mutually
+channels 3, 4, or 8: every enterprise AP sits on 1, 6, or 11, the three mutually
 non-overlapping channels. This is consistent with the campus enforcing a fixed channel plan
 (RRM) on managed infrastructure. The one exception is the student hotspot \texttt{26582626} in
 the Library, broadcasting on channel 5, which does create adjacent-channel interference with
-neighbouring channel-1 and channel-6 networks -- but since it is a personal device we cannot
+neighbouring channel-1 and channel-6 networks, but since it is a personal device we cannot
 scan or otherwise investigate further under the assignment's rules.
 
-\section{A2.3 -- The Class Map}
+\section{A2.3: The Class Map}
 Our router-hunt and wireless-survey data (Sections 2.1--2.2) were added to the shared
 \texttt{COL334\_A1\_Campus\_Map.xlsx}, and we independently verified two rows submitted by
 another team.
@@ -149,18 +149,18 @@ another team.
 shared map (Evidence~E-3, E-4, which already cover the underlying wireless-survey and
 router-hunt data this was built from): the internal aggregation-layer routers already listed in
 Table~\ref{tab:hophunt} (e.g.\ \texttt{10.254.236.x}), plus a further set of external transit and
-CDN-edge addresses seen only on paths to non-campus destinations -- NKN peering
+CDN-edge addresses seen only on paths to non-campus destinations, including NKN peering
 (\texttt{10.1.200.137}), Meta's peering/transit edge, and various CDN edges for
-\texttt{mit.edu}, \texttt{google.com}, and others -- that we left out of Table~\ref{tab:hophunt}
-itself to keep it focused on the destinations this report discusses in depth, but which are now
+\texttt{mit.edu} and \texttt{google.com}, among others. These were left out of Table~\ref{tab:hophunt}
+itself to keep it focused on the destinations this report discusses in depth, but they are now
 part of the class-wide picture.
 
 \textbf{Verification.} We selected two rows submitted by another team
 (2024CS50261+2024CS51073) to check independently from our own vantage point:
 
 \begin{itemize}
-    \item Row 1092 -- \texttt{10.255.221.1}, claimed at hop~11.
-    \item Row 1096 -- \texttt{10.255.237.94}, claimed at hop~7.
+    \item Row 1092: \texttt{10.255.221.1}, claimed at hop~11.
+    \item Row 1096: \texttt{10.255.237.94}, claimed at hop~7.
 \end{itemize}
 
 Both came back \textbf{couldn't reach}: a fresh \texttt{traceroute -n} and \texttt{ping -c 10} to
@@ -168,10 +168,10 @@ each IP, run directly from the Satpura access layer, returned 100\% timeouts/pac
 all 30 traceroute hops and all 10 pings (Evidence~E-15). We read this as more likely an
 architectural access-control choice than a sign the other team's row is wrong: these could be
 core routers that simply do not answer unsolicited ICMP originating from student-subnet IP space
-at all (as distinct from the hop~5/hop~8 case in Chapter~\ref{ch:Background}, which only
-suppressed TTL-exceeded replies while still forwarding transit traffic -- here nothing came back
-at all, including to packets that were never expected to traverse these IPs as intermediate
-hops). The other explanation we can't rule out is more mundane: the other team's claimed
+at all. That would be distinct from the hop~5/hop~8 case in Chapter~\ref{ch:Background}, which
+only suppressed TTL-exceeded replies while still forwarding transit traffic; here nothing came
+back at all, including to packets that were never expected to traverse these IPs as intermediate
+hops. The other explanation we can't rule out is more mundane: the other team's claimed
 hop-position or IP could simply be a typo or a stale reading from when that address briefly
 appeared in one of their traces, in which case ``couldn't reach'' would reflect an error in the
 source row rather than anything about the router's configuration. We have no way to distinguish
