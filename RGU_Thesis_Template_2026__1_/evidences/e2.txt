@@ -1,0 +1,77 @@
+~ 
+❯ nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+BSSID              SSID               FREQ      CHAN  SIGNAL 
+4E:BC:FE:A5:A4:A4  realme P2 Pro 5G   2437 MHz  6     97     
+E4:4E:2D:0C:82:61  eduroam            2412 MHz  1     74     
+E4:4E:2D:0C:82:60  IITD_WIFI          2412 MHz  1     74     
+E4:4E:2D:0C:82:64  IITD_Secure_GUEST  2412 MHz  1     74     
+E4:4E:2D:0C:82:63  --                 2412 MHz  1     74     
+E4:4E:2D:0C:82:6E  eduroam            5220 MHz  44    70     
+E4:4E:2D:0C:82:6F  IITD_WIFI          5220 MHz  44    69     
+E4:4E:2D:0C:82:6B  IITD_Secure_GUEST  5220 MHz  44    69     
+E4:4E:2D:0C:8B:E1  eduroam            2437 MHz  6     59     
+E4:4E:2D:0C:8B:E0  IITD_WIFI          2437 MHz  6     59     
+E4:4E:2D:0C:8B:E4  IITD_Secure_GUEST  2437 MHz  6     59     
+A4:B4:39:40:C3:61  eduroam            2462 MHz  11    59     
+A4:B4:39:40:C3:60  IITD_WIFI          2462 MHz  11    57     
+A4:B4:39:40:C3:64  IITD_Secure_GUEST  2462 MHz  11    57     
+A4:B4:39:40:C3:63  --                 2462 MHz  11    57     
+A4:B4:39:33:7E:A4  IITD_Secure_GUEST  2462 MHz  11    40     
+A4:B4:39:33:7E:A3  --                 2462 MHz  11    40     
+A4:B4:39:33:7E:A0  IITD_WIFI          2462 MHz  11    39     
+A4:B4:39:33:7E:A1  eduroam            2462 MHz  11    37     
+88:9C:AD:5A:43:41  eduroam            2462 MHz  11    29     
+88:9C:AD:5A:43:44  IITD_Secure_GUEST  2462 MHz  11    27     
+88:9C:AD:5A:43:40  IITD_WIFI          2462 MHz  11    27     
+
+~ took 5h27m2s 
+❯ nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+BSSID              SSID               FREQ      CHAN  SIGNAL 
+54:8A:BA:DD:7A:C1  IITD_Secure_GUEST  2437 MHz  6     97     
+54:8A:BA:DD:7A:C2  eduroam            2437 MHz  6     92     
+54:8A:BA:DD:7A:C4  IITD_WIFI          2437 MHz  6     87     
+54:8A:BA:DD:7A:C3  IITD_IOT           2437 MHz  6     87     
+54:8A:BA:DD:7A:CE  IITD_Secure_GUEST  5180 MHz  36    82     
+54:8A:BA:DD:7A:CB  IITD_WIFI          5180 MHz  36    80     
+54:8A:BA:DD:7A:CC  IITD_IOT           5180 MHz  36    80     
+04:5F:B9:2F:24:C1  IITD_Secure_GUEST  2412 MHz  1     69     
+04:5F:B9:2F:24:C4  IITD_WIFI          2412 MHz  1     69     
+04:5F:B9:2F:24:C3  IITD_IOT           2412 MHz  1     69     
+54:8A:BA:DD:7A:CD  eduroam            5180 MHz  36    68     
+04:5F:B9:2F:24:C2  eduroam            2412 MHz  1     67     
+70:BD:96:6E:75:42  eduroam            2462 MHz  11    65     
+70:BD:96:6E:75:41  IITD_Secure_GUEST  2462 MHz  11    64     
+70:BD:96:6E:75:44  IITD_WIFI          2462 MHz  11    64     
+70:BD:96:6E:75:43  IITD_IOT           2462 MHz  11    64     
+38:7A:CC:6D:56:A9  3E4C54F42B90       5220 MHz  44    59     
+78:22:88:40:9F:42  454B10749644       5220 MHz  44    44     
+04:5F:B9:2F:24:CB  IITD_WIFI          5580 MHz  116   42     
+04:5F:B9:2F:24:CE  IITD_Secure_GUEST  5580 MHz  116   42     
+04:5F:B9:2F:24:CD  eduroam            5580 MHz  116   42     
+04:5F:B9:2F:24:CC  IITD_IOT           5580 MHz  116   42     
+
+~ took 6s 
+❯ nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+BSSID              SSID                         FREQ      CHAN  SIGNAL 
+70:DF:2F:04:98:62  eduroam                      2412 MHz  1     72     
+70:DF:2F:04:98:61  IITD_Secure_GUEST            2412 MHz  1     72     
+70:DF:2F:04:98:64  IITD_WIFI                    2412 MHz  1     72     
+70:DF:2F:04:98:63  IITD_IOT                     2412 MHz  1     72     
+5C:A6:2D:44:E7:E2  eduroam                      2462 MHz  11    62     
+5C:A6:2D:44:E7:E1  IITD_Secure_GUEST            2462 MHz  11    62     
+5C:A6:2D:44:E7:ED  eduroam                      5640 MHz  128   56     
+5C:A6:2D:44:E7:EB  IITD_WIFI                    5640 MHz  128   55     
+5C:A6:2D:44:E7:EE  IITD_Secure_GUEST            5640 MHz  128   54     
+5C:A6:2D:44:E7:EC  IITD_IOT                     5640 MHz  128   52     
+70:DF:2F:04:98:6C  IITD_IOT                     5745 MHz  149   52     
+70:DF:2F:04:98:6E  IITD_Secure_GUEST            5745 MHz  149   50     
+70:DF:2F:04:98:6D  eduroam                      5745 MHz  149   50     
+70:DF:2F:04:98:6B  IITD_WIFI                    5745 MHz  149   50     
+B8:B7:DB:E6:BD:B5  26582626                     2432 MHz  5     42     
+70:DF:2F:4D:A8:04  IITD_WIFI                    2437 MHz  6     40     
+BE:00:19:A0:0C:FA  rjnish                       2437 MHz  6     40     
+5C:A6:2D:6F:F8:E1  IITD_Secure_GUEST            2412 MHz  1     39     
+5C:A6:2D:6F:F8:E4  IITD_WIFI                    2412 MHz  1     39     
+5C:A6:2D:6F:F8:E3  IITD_IOT                     2412 MHz  1     39     
+70:DF:2F:4D:A8:02  eduroam                      2437 MHz  6     39     
+70:DF:2F:4D:A8:01  IITD_Secure_GUEST            2437 MHz  6     39

@@ -1,9 +1,148 @@
-\chapter{Background Research}\label{ch:Background}
+\chapter{Your Path Out}\label{ch:Background}
 
-This chapter provides some background research on the project and examines some previous work.
+This chapter documents the one part of the network we can see completely: the path from our
+own device out to the open Internet.
 
-\section{Conclusions}
+\section{Device and Access Point}
+Measurements were taken from both teammates' devices, both in Satpura Hostel but in different
+rooms. Tejasvi's laptop (Ubuntu) connects over Wi-Fi (interface \texttt{wlo1}) from room NB-09;
+the nearest access point is photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}). Yashvardhan
+connects from room NB-01, also Satpura Hostel; his nearest access point is photographed in
+Evidence~E-2 (Figure~\ref{fig:apphoto2}). Both photos carry a handwritten placard giving roll
+numbers, date, and location.
 
-The main conclusions for this chapter.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{report/images/e1_ap_photo.jpeg}
+    \caption[Access point nearest Tejasvi's device]{The access point/wall unit nearest Tejasvi's device (NB-09) during measurement, with evidence placard. See Evidence E-1.}
+    \label{fig:apphoto}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{report/images/e2_yash_ap_photo.jpeg}
+    \caption[Access point nearest Yashvardhan's device]{The access point/wall unit nearest Yashvardhan's device (NB-01, same hostel), with evidence placard. See Evidence E-2.}
+    \label{fig:apphoto2}
+\end{figure}
 
+\section{Finding T1}
+\texttt{ip -br a} shows our device's address as \texttt{10.184.6.40/19} on \texttt{wlo1}.
+\texttt{ip route | grep default} gives:
+\begin{quote}\ttfamily\footnotesize
+default via 10.184.0.1 dev wlo1 proto dhcp src 10.184.6.40 metric 600
+\end{quote}
+so the DHCP-assigned default gateway is \textbf{10.184.0.1}. \texttt{resolvectl status} shows our
+active DNS resolver as \textbf{10.7.172.202} (with 10.10.1.4, 10.10.1.5, 10.10.2.2 also
+configured).
+
+\textbf{A discrepancy worth flagging.} The handout notes that a traceroute to anything outside
+campus should show the gateway at hop~1 ``by definition'', and that if it doesn't, that's worth
+a sentence. In our case it doesn't: every traceroute we ran (Chapter~\ref{ch:Design}, and the
+one below) shows hop~1 as \textbf{10.184.0.13}, not 10.184.0.1. Both addresses are in the same
+\texttt{/19}, so our best explanation is that 10.184.0.1 is a virtual/first-hop address (e.g.\ a
+shared gateway IP fronting several access switches, possibly via VRRP-style redundancy), while
+10.184.0.13 is the specific physical router interface that actually decrements TTL and replies
+with the ICMP time-exceeded message -- i.e.\ our packets' first real Layer-3 hop is a different,
+specific box behind the advertised gateway address. We cannot fully rule out the alternative
+that 10.184.0.1 simply never responds to traceroute probes (rate-limited or filtered ICMP) while
+still being the true first hop -- we have no way to distinguish ``different device'' from ``same
+device, doesn't reply on this address'' without further tooling that is out of scope here. For
+the rest of this report we follow the handout's implicit intent and use \textbf{10.184.0.13} as
+T1, since that is the address that is consistently and observably our first hop (Evidence~E-5;
+Yashvardhan's equivalent \texttt{ip route}/traceroute output, Evidence~E-6, confirms the same
+address).
+
+\section{Path to the Boundary}
+A traceroute to an external destination not previously used elsewhere in this report
+(\texttt{www.codechef.com}, chosen to avoid double-counting a target already used for T1--T5)
+gives (Evidence~E-7):
+\footnotesize
+\begin{verbatim}
+ 1  10.184.0.13      4.929 ms  4.856 ms  4.816 ms
+ 2  10.255.109.100   4.761 ms  4.732 ms  4.702 ms
+ 3  10.255.107.3     4.679 ms  4.649 ms  4.622 ms
+ 4  10.119.233.65    4.590 ms  4.560 ms  4.531 ms
+ 5  * * *
+ 6  10.119.234.162   8.483 ms  7.723 ms  7.581 ms
+ 7  * 14.143.159.145 11.753 ms *
+ 8  * * *
+ 9  121.240.255.30   11.581 ms  11.539 ms *
+10  104.23.231.30 17.261 ms * 104.23.231.11 9.883 ms
+11  172.67.75.52     9.713 ms  8.882 ms  8.770 ms
+\end{verbatim}
+\normalsize
+Hop~5 and hop~8 are unresponsive; hop~7 is the first public IP (first boundary
+crossing); hop~11 is the destination itself.
+
+Hops 1--6 are all internal (\texttt{10.x.x.x}) and match the core/egress path already identified
+in Table~\ref{tab:hophunt} (Chapter~\ref{ch:Design}): local gateway, the two core distribution
+routers, the internal border router, and the external egress gateway. Hop~5 does not respond,
+which we read as an unresponsive internal hop rather than a gap in the path, since hop~6 replies
+with a plausible, monotonically-consistent RTT. The first \emph{public} IP appears at hop~7:
+
+\begin{table}[H]
+\centering
+\caption{Whois lookups for the first public hops after our gateway.}
+\label{tab:whoispublic}
+\footnotesize
+\begin{tabular}{@{}cp{2.7cm}p{5.8cm}p{2.8cm}@{}}
+\toprule
+Hop & IP & Owner (whois) & Role \\
+\midrule
+7 & 14.143.159.145 & Tata Communications (TATACOMM-IN) & Upstream ISP hop \\
+9 & 121.240.255.30 & Tata Communications (TATACOMM-IN, ex-VSNL) & Upstream ISP hop \\
+10 & 104.23.231.30 / .11 & Cloudflare, Inc. (CLOUDFLARENET) & CDN edge \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is where our traffic crosses the IIT Delhi boundary: hop~6 (10.119.234.162, the internal
+egress gateway) hands off to hop~7, the first Tata Communications address. From there it stays
+on Tata's network (hop~9) before landing on a Cloudflare edge node (hop~10) that terminates
+\texttt{www.codechef.com} -- consistent with the CDN-edge explanation we gave in
+Chapter~\ref{ch:Implementation} for why T5's measured minimum RTT undercut its nominal
+geographic distance: Tata Communications appears to be (at least one of) our commercial
+upstream(s), and a lot of what looks like ``the open Internet'' from here is actually a nearby
+CDN edge rather than the origin server.
+
+\section{Diagram: Device to Internet}
+Figure~\ref{fig:a14diagram} draws both teammates' paths from device to the open Internet,
+merging at the shared gateway, following the internal core/egress path, crossing the IIT Delhi
+boundary, and stopping at a dashed line past which everything is inferred rather than directly
+observed.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.62\textwidth]{report/images/A1.4.png}
+    \caption[Device-to-Internet path diagram]{Both teammates' device-to-Internet paths, merging at the shared T1 gateway. Evidence tags reference Chapter~\ref{ch:Evaluation}; everything past the dashed line is inferred, not directly observed.}
+    \label{fig:a14diagram}
+\end{figure}
+
+\textbf{Analytical notes.} Two things in this diagram are worth spelling out rather than leaving
+implicit:
+
+\emph{The shared gateway.} Both teammates' independent traceroutes hit \textbf{10.184.0.13} at
+hop~1 (Evidence~E-5, E-6), even though they capture from different access points in different
+rooms (NB-09 and NB-01). Since both rooms are in the same hostel (Satpura), this is a fairly
+mild result on its own -- one first-hop gateway serving one hostel building is the ordinary
+case, not a surprising one. What it does confirm concretely is that IIT Delhi is not assigning a
+separate default gateway per room or per AP within a hostel; the access-layer merge happens at
+(at least) the building level. We cannot rule out the alternative that 10.184.0.13 in fact serves
+a wider area than just Satpura (multiple hostels sharing one gateway); distinguishing the two
+would need a third vantage point in a different hostel that still resolves to the same first
+hop.
+
+\emph{The ``missing'' hops.} Hops~5 and~8 in Section~1.3's traceroute returned \texttt{* * *}
+(request timeouts). We read this as \emph{not} a routing failure: the surrounding hops (4 and 6;
+7 and 9) all reply with plausible, monotonically-increasing RTTs, which would not happen if a
+hop in between were actually dropping our packets. The more likely explanation is that these
+specific routers are configured not to generate ICMP time-exceeded replies at all -- a common
+practice for masking internal infrastructure -- meaning our packets successfully transited them
+on the way to the next hop, but the routers themselves declined to identify themselves. The
+alternative we can't fully rule out is transient packet loss specific to the one probe we sent
+per hop; re-running the traceroute with more probes per hop would help distinguish ``never
+replies'' from ``dropped that particular probe''.
+
+\section{Evidence Tags}
+Every element in the final diagram must carry an evidence tag (E-1, E-2, \ldots) referencing
+Chapter~\ref{ch:Evaluation}; untagged elements score zero per the assignment's marking rules.

@@ -1,0 +1,8 @@
+❯ ping -c 50 -s 64 www.iitb.ac.in
+PING www.iitb.ac.in (103.21.124.133) 64(92) bytes of data.
+
+--- www.iitb.ac.in ping statistics ---
+50 packets transmitted, 0 received, 100% packet loss, time 50162ms
+
+
+~ took 1m0s 

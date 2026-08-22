@@ -1,0 +1,12 @@
+~ 
+❯ ping -c 50 -s 64 8.8.8.8
+--- 8.8.8.8 ping statistics ---
+50 packets transmitted, 49 received, 2% packet loss, time 49119ms
+rtt min/avg/max/mdev = 42.824/49.859/119.830/11.032 ms
+
+~ 
+❯ ping -c 50 -s 64 www.mit.edu
+--- www.mit.edu ping statistics ---
+50 packets transmitted, 48 received, 4% packet loss, time 49175ms
+rtt min/avg/max/mdev = 35.596/51.145/247.982/36.326 ms
+

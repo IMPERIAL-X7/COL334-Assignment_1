@@ -1,11 +1,64 @@
-\chapter{Conclusion}\label{ch:Conclusion}
+\chapter{Three Findings}\label{ch:Conclusion}
 
-This chapter summarises the main outcomes and conclusions resulting from this body of work.
+\textbf{F-1 -- Diagnostic Blackholes in Transit}\\
+Saw: Hops 5 and 8 in the traceroute to \texttt{www.codechef.com} returned 100\% timeouts
+(\texttt{* * *}) on both teammates' independent runs.\\
+Evidence: E-5, E-6\\
+Think: We conclude that these specific transit routers are configured not to generate ICMP
+time-exceeded replies, obscuring internal infrastructure from standard traceroute-based mapping.
+One other explanation we couldn't rule out is that these routers have a rate-limited ICMP
+control plane that happened to be saturated by background traffic on both our probes, dropping
+our specific packets rather than enforcing a hard no-reply policy -- though the fact that
+\emph{both} teammates saw exactly the same two hops go silent, on different days and devices,
+makes coincidental rate-limiting the less likely of the two.\\
+Fix: Enable ICMP time-exceeded (Type 11, Code 0) generation on these internal routers, with a
+conservative rate limit (e.g.\ 50 pps) so legitimate diagnostics and PMTUD keep working without
+opening a full information-disclosure path.\\
+Check: Re-run \texttt{traceroute -n www.codechef.com}; hops 5 and 8 should return valid IPs and
+RTTs consistent with their neighbours, instead of asterisks.
 
-\section{Conclusions}
+\textbf{F-2 -- First-Hop Wi-Fi Delay Floor}\\
+Saw: The minimum RTT to the immediate local gateway (10.184.0.13) across 50 probes was
+3.904\,ms -- not the sub-millisecond floor a single wired hop would suggest.\\
+Evidence: E-10\\
+Think: We conclude this reflects the Wi-Fi RF environment in the hostel -- CSMA/CA contention
+and backoff on a busy 2.4/5\,GHz band -- rather than anything downstream of the gateway itself,
+consistent with our reading of this floor in Section~3.1. One other explanation we couldn't rule
+out is that the access point's CPU is under load from managing a large number of simultaneous
+MBSSID client associations, adding a small software-level queuing delay before a packet even
+reaches the routing fabric -- a device-side bottleneck rather than a wireless-medium one.\\
+Fix: Add access points in the hostel corridors and reduce transmit power on existing ones to
+shrink cell size and cut co-channel contention, rather than relying on the current handful of
+APs to cover the whole floor.\\
+Check: Repeat \texttt{ping -c 50 10.184.0.13} from the same location; if the RF explanation is
+right, the minimum RTT should measurably drop once contention is reduced (we do not have a
+specific target threshold without knowing the current channel load, but a drop toward the
+sub-1\,ms range typical of an uncontended wired first hop would confirm it).
 
-The main conclusions that may be drawn from the body of work.
+\textbf{F-3 -- Transient Congestion Spikes at Busy Hour}\\
+Saw: During the busy-hour capture, RTT to T3 sat on a $\sim$27\,ms baseline but spiked
+repeatedly to as high as $\sim$192\,ms, compared to a flat $\sim$48\,ms baseline with only
+isolated spikes (max $\sim$155\,ms) at quiet hour (Chapter~\ref{ch:Implementation},
+Figure~\ref{fig:a33plot}).\\
+Evidence: E-9, Figure~\ref{fig:a33plot}\\
+Think: We conclude the sharp-in/sharp-out spike shape reflects bursty cross-traffic filling a
+router buffer and draining quickly once the burst ends, rather than sustained congestion -- this
+is consistent with what Chapter~3 already argues from the same plot. One other explanation we
+couldn't rule out is that these spikes are ISP-side micro-outages or momentary throttling at the
+Tata Communications peering edge identified in Chapter~1, rather than a purely local buffer
+filling -- we have no way to distinguish ``our packet queued behind others'' from ``the upstream
+link itself briefly stalled'' without visibility into that router, which is outside what we can
+observe from a single end host.\\
+Fix: If the cause is local buffering, enabling an active queue management scheme (e.g.\
+fq\_codel) on the campus egress gateway would bound queuing delay by dropping/marking early
+instead of letting the buffer fill; this would not help if the cause is upstream, which is why
+distinguishing the two matters before recommending a fix with confidence.\\
+Check: Repeat the 300-packet busy-hour capture; under the local-buffering explanation, adding
+AQM should visibly cap spike height in a later capture. Under the upstream explanation, spikes
+would persist regardless of any change made on campus-controlled equipment -- which would itself
+be informative.
 
-\section{Future Work}
-
-Further development that could be carried out in the future.
+\vspace{1em}
+\noindent At least one finding above (F-1) comes from the topology work and at least two
+(F-2, F-3) come from the delay experiment, per the assignment's requirement of at least one
+from each.
