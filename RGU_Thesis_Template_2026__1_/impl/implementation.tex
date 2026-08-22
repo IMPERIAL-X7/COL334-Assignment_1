@@ -2,9 +2,10 @@
 
 \section{A3.1: Where Does the Time Go?}
 Each of T1--T5 was pinged 50 times; Table~\ref{tab:rttstats} records the minimum, average, and
-maximum RTT observed for each. Distances are rough straight-line estimates (T2/T4 from map
-distance to the named campus, T3/T5 from public IP geolocation, i.e.\ the resolved IP's
-registered location) and are not independently verified against ground truth.
+maximum RTT observed for each. Distances are rough straight-line estimates, not independently
+verified against ground truth: T2 and T4 from Google Maps, measuring Satpura Hostel to the named
+campus/city; T3 and T5 from MaxMind GeoIP resolution of the target IP to its registered
+geographic location.
 
 \begin{table}[H]
 \centering
@@ -15,7 +16,7 @@ registered location) and are not independently verified against ground truth.
 \toprule
 Target (role) & Resolved IP & Est. distance & Min RTT & Avg RTT & Max RTT \\
 \midrule
-T1 (local gateway) & 10.184.0.13 & $<$0.1 km & 3.904 & 8.891 & 96.290 \\
+T1 (local gateway)\footnotemark & 10.184.0.13 & $<$0.1 km & 3.904 & 8.891 & 96.290 \\
 T2 (campus target) & www.iitd.ac.in & $\sim$2.0 km & 3.315 & 7.489 & 14.110 \\
 T3 (regional DNS) & 8.8.8.8 & $\sim$20.0 km & 42.824 & 49.859 & 119.830 \\
 T4 (IIT Bombay) & www.iitb.ac.in & $\sim$1100 km & \multicolumn{3}{c}{N/A: 100\% packet loss} \\
@@ -25,6 +26,9 @@ T5 (global target) & www.mit.edu & nominal 12{,}000 km & 35.596 & 51.145 & 247.9
 
 {\footnotesize All RTT values in ms.}
 \end{table}
+\footnotetext{Configured gateway is 10.184.0.1; 10.184.0.13 is the first-hop interface that
+actually answers ICMP, per Chapter~\ref{ch:Background}, Section~1.2. We ping .13 since it is the
+address our traffic demonstrably passes through.}
 
 T4 returned 100\% packet loss across all 50 probes. We read this as ICMP being firewalled at or
 near \texttt{www.iitb.ac.in} rather than a routing failure, since traceroutes toward the same
@@ -33,8 +37,8 @@ happen if the path itself were broken.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{report/images/a3_1_rtt_vs_distance.png}
-    \caption[RTT vs.\ approximate distance]{Minimum, median/average, and maximum RTT against approximate distance for T1, T2, T3, T5 (T4 excluded, no response).}
+    \includegraphics[width=0.75\textwidth]{report/images/a3_1_rtt_vs_distance_t1t2t3.png}
+    \caption[RTT vs.\ approximate distance]{Minimum, median/average, and maximum RTT against approximate distance for T1, T2, and T3. T4 is excluded (100\% packet loss). T5 is excluded from this plot to preserve the linear distance scale, since its nominal 12{,}000\,km would compress T1--T3 into an unreadable cluster near the origin; T5 is analysed in the text below instead.}
     \label{fig:a31plot}
 \end{figure}
 

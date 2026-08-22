@@ -6,7 +6,7 @@ own device out to the open Internet.
 \section{Device and Access Point}
 Measurements were taken from both teammates' devices, both in Satpura Hostel but in different
 rooms. Tejasvi's laptop (Ubuntu) connects over Wi-Fi (interface \texttt{wlo1}) from room NB-09;
-the nearest access point is photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}). Yashvardhan
+the nearest access point is photographed in Evidence~E-1 (Figure~\ref{fig:apphoto}). Yashwardhan
 connects from room NB-01, also Satpura Hostel; his nearest access point is photographed in
 Evidence~E-2 (Figure~\ref{fig:apphoto2}). Both photos carry a handwritten placard giving roll
 numbers, date, and location.
@@ -21,7 +21,7 @@ numbers, date, and location.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{report/images/e2_yash_ap_photo.jpeg}
-    \caption[Access point nearest Yashvardhan's device]{The access point/wall unit nearest Yashvardhan's device (NB-01, same hostel), with evidence placard. See Evidence E-2.}
+    \caption[Access point nearest Yashwardhan's device]{The access point/wall unit nearest Yashwardhan's device (NB-01, same hostel), with evidence placard. See Evidence E-2.}
     \label{fig:apphoto2}
 \end{figure}
 
@@ -35,22 +35,25 @@ so the DHCP-assigned default gateway is \textbf{10.184.0.1}. \texttt{resolvectl 
 active DNS resolver as \textbf{10.7.172.202} (with 10.10.1.4, 10.10.1.5, 10.10.2.2 also
 configured).
 
-\textbf{A discrepancy worth flagging.} The handout notes that a traceroute to anything outside
-campus should show the gateway at hop~1 ``by definition'', and that if it doesn't, that's worth
-a sentence. In our case it doesn't: every traceroute we ran (Chapter~\ref{ch:Design}, and the
-one below) shows hop~1 as \textbf{10.184.0.13}, not 10.184.0.1. Both addresses are in the same
-\texttt{/19}, so our best explanation is that 10.184.0.1 is a virtual/first-hop address (e.g.\ a
-shared gateway IP fronting several access switches, possibly via VRRP-style redundancy), while
-10.184.0.13 is the specific physical router interface that actually decrements TTL and replies
-with the ICMP time-exceeded message, i.e.\ our packets' first real Layer-3 hop is a different,
-specific box behind the advertised gateway address. We cannot fully rule out the alternative
-that 10.184.0.1 simply never responds to traceroute probes (rate-limited or filtered ICMP) while
-still being the true first hop; we have no way to distinguish ``different device'' from ``same
-device, doesn't reply on this address'' without further tooling that is out of scope here. For
-the rest of this report we follow the handout's implicit intent and use \textbf{10.184.0.13} as
-T1, since that is the address that is consistently and observably our first hop (Evidence~E-5;
-Yashvardhan's equivalent \texttt{ip route}/traceroute output, Evidence~E-6, confirms the same
-address).
+\textbf{A discrepancy worth flagging.} \texttt{ip route} explicitly names \textbf{10.184.0.1} as
+our configured default gateway, so that is our formal \textbf{T1}. The handout also notes that a
+traceroute to anything outside campus should show the gateway at hop~1 ``by definition'', and
+that if it doesn't, that's worth a sentence. In our case it doesn't: every traceroute we ran
+(Chapter~\ref{ch:Design}, and the one below) shows hop~1 as \textbf{10.184.0.13}, not 10.184.0.1.
+Both addresses are in the same \texttt{/19}, so our best explanation is that 10.184.0.1 is a
+virtual/first-hop address (e.g.\ a shared gateway IP fronting several access switches, possibly
+via VRRP-style redundancy), while 10.184.0.13 is the specific physical router interface that
+actually decrements TTL and replies with the ICMP time-exceeded message, i.e.\ our packets' first
+real Layer-3 hop is a different, specific box behind the advertised gateway address. We cannot
+fully rule out the alternative that 10.184.0.1 simply never responds to traceroute probes
+(rate-limited or filtered ICMP) while still being the true first hop; we have no way to
+distinguish ``different device'' from ``same device, doesn't reply on this address'' without
+further tooling that is out of scope here. We therefore keep the two roles distinct throughout
+this report: \textbf{T1 (10.184.0.1)} is the configured gateway, while \textbf{10.184.0.13} is
+the first TTL-decrementing interface that actually answers our probes, and is what the delay
+experiments in Chapter~\ref{ch:Implementation} measure, since it is the address that is
+consistently and observably our first hop (Evidence~E-5; Yashwardhan's equivalent
+\texttt{ip route}/traceroute output, Evidence~E-6, confirms the same address).
 
 \section{Path to the Boundary}
 A traceroute to an external destination not previously used elsewhere in this report
