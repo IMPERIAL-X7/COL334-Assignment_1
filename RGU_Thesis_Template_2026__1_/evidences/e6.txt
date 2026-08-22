@@ -1,0 +1,25 @@
+~ 
+❯ whois 14.143.159.145 | grep -iE "orgname|netname|descr"
+netname:        TATACOMM-IN
+descr:          Internet Service Provider
+descr:          TATA Communications formerly VSNL is Leading ISP,
+descr:          Data and Voice Carrier in India
+descr:          Tata Communications Limited
+
+~ 
+❯ whois 121.240.255.30 | grep -iE "orgname|netname|descr"
+netname:        TATACOMM-IN
+descr:          Internet Service Provider
+descr:          TATA Communications formerly VSNL is Leading ISP,
+descr:          Data and Voice Carrier in India
+descr:          Route for VSNL
+
+~ 
+❯ whois 104.23.231.30 | grep -iE "orgname|netname|descr"
+NetName:        CLOUDFLARENET
+OrgName:        Cloudflare, Inc.
+
+~ 
+❯ whois 172.67.75.52 | grep -iE "orgname|netname|descr"
+NetName:        CLOUDFLARENET
+OrgName:        Cloudflare, Inc.

@@ -1,0 +1,22 @@
+Here are three strong findings drawn directly from your exact traceroutes and ping logs, formatted strictly to the A5 template.
+
+F-1 · Diagnostic Blackholes in Transit
+Saw: Hops 5 and 8 in the [www.codechef.com](https://www.codechef.com) traceroute returned 100% timeouts (* * *) with >3000ms wait.
+Evidence: E-5
+Think: I conclude that these specific transit routers are configured to drop ICMP Time Exceeded messages to obscure network infrastructure, breaking standard diagnostic mapping. One other explanation I couldn't rule out is that these routers have a strictly rate-limited ICMP control plane that was already saturated by background traffic, causing our specific trace packets to be dropped rather than a hard configuration ban.
+Fix: Enable ICMP TTL Exceeded (Type 11, Code 0) generation on all internal core routers with a generous but safe rate limit (e.g., 50 pps) to allow proper PMTUD and network diagnostics.
+Check: Run traceroute -n 8.8.8.8 and verify that hops 5 and 8 return valid IP addresses and RTTs under 10ms instead of asterisks.
+
+F-2 · Excessive First-Hop Access Delay
+Saw: The minimum RTT to the immediate local gateway (10.184.0.13) was 3.904 ms.
+Evidence: E-10
+Think: I conclude that the 2.4GHz/5GHz RF environment in the hostel is experiencing heavy channel contention, forcing the client to wait through multiple CSMA/CA backoff periods before physically transmitting. One other explanation I couldn't rule out is that the AP's internal CPU is overloaded handling hundreds of student MBSSID associations, causing software-level queuing delays before the packet even reaches the routing fabric.
+Fix: Provision additional Access Points in the hostel corridors and reduce the transmit power (Tx power) of existing APs to shrink cell sizes and reduce co-channel interference.
+Check: Run ping -c 50 10.184.0.13 from the exact same location; the minimum RTT should reliably drop below 1.5 ms.
+
+F-3 · Severe Transient Bufferbloat
+Saw: During the busy hour, the baseline RTT to 8.8.8.8 was ~27 ms, but experienced severe transient queuing spikes reaching up to 193 ms.
+Evidence: E-9, A3.3 Plot
+Think: I conclude that the campus edge router has excessively large drop-tail buffers (bufferbloat) that fill up during bursty student video streaming, needlessly holding packets instead of dropping them to signal TCP congestion control. One other explanation I couldn't rule out is that the campus ISP link itself is suffering from unpredictable micro-outages or ISP-side throttling at the Tata Communications peering edge, causing sudden halts in packet processing rather than local queue saturation.
+Fix: Implement an Active Queue Management (AQM) algorithm like fq_codel or RED on the campus egress gateway (10.119.234.162) to proactively drop packets before the queue depth exceeds 20ms of delay.
+Check: Repeat the 300-packet busy hour ping test; the maximum recorded RTT spike should not exceed the baseline by more than 30 ms.

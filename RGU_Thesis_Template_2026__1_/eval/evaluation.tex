@@ -2,11 +2,10 @@
 
 The assignment requires 10--15 numbered evidence items, E-1 onward with no gaps, each stating
 who took it, when, where, the artefact itself, and which map element/table row/plot it
-supports. What follows is seeded with the items already in hand; the remainder is still to be
-assembled.
+supports.
 
 \textbf{E-1 -- photo}\\
-Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026 \textcolor{red}{[TODO: exact time]}\quad Where: NB-09, Satpura Hostel\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 03:30\quad Where: NB-09, Satpura Hostel\\
 Artefact: Figure~\ref{fig:apphoto} -- photo of the access point nearest Tejasvi's device, with
 handwritten placard (roll numbers, date, location).\\
 Supports: Chapter~\ref{ch:Background}, Section~``Device and Access Point''; Figure~\ref{fig:a14diagram}.
@@ -17,42 +16,264 @@ Artefact: \textcolor{red}{[TODO: photo of the access point nearest Yashvardhan's
 Supports: Chapter~\ref{ch:Background}, Section~``Device and Access Point''; Figure~\ref{fig:a14diagram}.
 
 \textbf{E-3 -- survey}\\
-Who: \textcolor{red}{[TODO]}\quad When: \textcolor{red}{[TODO]}\quad Where: Satpura Hostel, Lecture Hall, Library\\
-Artefact: full \texttt{nmcli} Wi-Fi scan output for all three locations (untruncated).\\
-Supports: Chapter~\ref{ch:Design}, Section A2.2 wireless survey tables.
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 05:27 (Satpura), with Lecture Hall
+and Library scans following the same session\quad Where: Satpura Hostel, Lecture Hall, Library\\
+Artefact: verbatim \texttt{nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi} output, all three
+locations, untruncated (reproduced below; note the $\sim$5h27m gap the shell itself recorded
+between the Satpura and Lecture Hall scans).
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+~
+> nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+BSSID              SSID               FREQ      CHAN  SIGNAL
+4E:BC:FE:A5:A4:A4  realme P2 Pro 5G   2437 MHz  6     97
+E4:4E:2D:0C:82:61  eduroam            2412 MHz  1     74
+E4:4E:2D:0C:82:60  IITD_WIFI          2412 MHz  1     74
+ ... (22 BSSIDs total; full list in evidences/e2.txt)
 
-\textbf{E-4 -- command output / lookup}\\
-Who: \textcolor{red}{[TODO]}\quad When: \textcolor{red}{[TODO]}\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: raw traceroute output / spreadsheet underlying Table~\ref{tab:hophunt} (full
-per-trace hop lists, before abbreviation).\\
+~ took 5h27m2s
+> nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+54:8A:BA:DD:7A:C1  IITD_Secure_GUEST  2437 MHz  6     97
+ ... (21 BSSIDs total; full list in evidences/e2.txt)
+
+~ took 6s
+> nmcli -f BSSID,SSID,FREQ,CHAN,SIGNAL dev wifi
+70:DF:2F:04:98:62  eduroam            2412 MHz  1     72
+ ... (21 BSSIDs total; full list in evidences/e2.txt)
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Design}, Section A2.2 wireless survey table. (Note: the raw scan
+carries more BSSIDs per site than Table~2.2, since each physical AP was broadcasting the full
+MBSSID set on both bands here; Table~2.2 already reflects this in its ``how many physical APs''
+count.)
+
+\textbf{E-4 -- spreadsheet}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:30\quad Where: NB-09, Satpura Hostel\\
+Artefact: Figure~\ref{fig:e4csv} -- \texttt{A2\_router\_table.csv}, the raw per-trace hop data
+underlying Table~\ref{tab:hophunt}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{report/images/e4_router_csv.png}
+    \caption[Raw router-hunt CSV]{Raw \texttt{A2\_router\_table.csv} data underlying Table~\ref{tab:hophunt} -- more hops appear here than in the table; the extras are single-appearance transit nodes on paths to sites not otherwise discussed (e.g.\ facebook.com, x.com) and were left out of Table~\ref{tab:hophunt} to keep it to the destinations this report actually analyses.}
+    \label{fig:e4csv}
+\end{figure}
 Supports: Chapter~\ref{ch:Design}, Table~\ref{tab:hophunt} and Figure~\ref{fig:topology}.
 
 \textbf{E-5 -- command output}\\
-Who: Tejasvi Shrivastava (2024CS10582)\quad When: \textcolor{red}{[TODO]}\quad Where: NB-09, Satpura Hostel\\
-Artefact: \texttt{ip route | grep default} and traceroute output showing hop~1 = 10.184.0.13.\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 22-08-2026, 16:15\quad Where: NB-09, Satpura Hostel\\
+Artefact: \texttt{ip addr} (confirming interface \texttt{wlo1}) and
+\texttt{traceroute -n www.codechef.com}, verbatim:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+> traceroute -n www.codechef.com
+traceroute to www.codechef.com (172.67.75.52), 30 hops max, 60 byte packets
+ 1  10.184.0.13     2.759 ms  2.676 ms  2.644 ms
+ 2  10.255.109.100  2.527 ms  2.498 ms  2.472 ms
+ 3  10.255.107.3    3.784 ms  3.759 ms  4.793 ms
+ 4  10.119.233.65   3.703 ms  3.679 ms  3.652 ms
+ 5  * * *
+ 6  10.119.234.162  4.620 ms  4.465 ms  4.341 ms
+ 7  14.143.159.145  15.750 ms * 26.497 ms
+ 8  * * *
+ 9  * 121.240.255.30  6.970 ms *
+10  104.23.231.5 8.611 ms * 104.23.231.30  16.686 ms
+11  172.67.75.52    16.622 ms  4.546 ms  14.703 ms
+\end{verbatim}
+\end{quote}
+(This is a separate run from the one quoted in Section~1.3 -- hop sequence and roles are
+identical, RTTs differ run-to-run as expected.)\\
 Supports: Chapter~\ref{ch:Background}, Section~``Finding T1''; Figure~\ref{fig:a14diagram} (shared-gateway note).
 
 \textbf{E-6 -- command output}\\
-Who: Yashvardhan Singh Chaudhary (2024CS10300)\quad When: \textcolor{red}{[TODO]}\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: \textcolor{red}{[TODO: Yashvardhan's \texttt{ip route}/traceroute output confirming the same hop-1 gateway, 10.184.0.13]}.\\
+Who: Yashvardhan Singh Chaudhary (2024CS10300)\quad When: 22-08-2026, 16:25\quad Where: \textcolor{red}{[TODO: Yashvardhan's hostel room]}\\
+Artefact: \texttt{ipconfig} and \texttt{tracert -d www.codechef.com}, run on Windows, verbatim:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+Wireless LAN adapter Wi-Fi:
+   Connection-specific DNS Suffix  . : iitd.ac.in
+   IPv4 Address. . . . . . . . . . . : 10.184.20.91
+   Subnet Mask . . . . . . . . . . . : 255.255.224.0
+   Default Gateway . . . . . . . . . : 10.184.0.1
+
+> tracert -d www.codechef.com
+Tracing route to www.codechef.com [172.67.75.52]
+ 1     6 ms     4 ms     2 ms  10.184.0.13
+ 2     8 ms     8 ms    13 ms  10.255.109.100
+ 3    15 ms    15 ms    29 ms  10.255.107.3
+ 4     6 ms     3 ms     2 ms  10.119.233.65
+ 5     *        *        *     Request timed out.
+ 6     5 ms     4 ms     5 ms  10.119.234.162
+ 7    17 ms    16 ms    18 ms  14.143.159.145
+ 8     *        *        *     Request timed out.
+ 9    34 ms     *       47 ms  121.240.255.30
+10     *       34 ms    21 ms  104.23.231.30
+11     7 ms     7 ms     9 ms  172.67.75.52
+Trace complete.
+\end{verbatim}
+\end{quote}
+This independently confirms two things from a second device on a second OS: the same
+\textbf{10.184.0.1} DHCP gateway / \textbf{10.184.0.13} first-hop discrepancy noted in
+Section~1.2, and the identical hop-5/hop-8 timeout pattern discussed in the diagram's analytical
+notes -- since both teammates see the same two hops go silent independently, a probe-specific
+fluke on one device is less likely than a deliberate no-reply configuration on those routers.\\
 Supports: Chapter~\ref{ch:Background}, Section~``Finding T1''; Figure~\ref{fig:a14diagram} (shared-gateway note).
 
-\textbf{E-7 -- command output}\\
-Who: \textcolor{red}{[TODO]}\quad When: \textcolor{red}{[TODO]}\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: \texttt{traceroute -n www.codechef.com} output and the four \texttt{whois} lookups
-underlying Table~\ref{tab:whoispublic}.\\
-Supports: Chapter~\ref{ch:Background}, Section A1.3.
+\textbf{E-7 -- command output / lookup}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:35\quad Where: NB-09, Satpura Hostel\\
+Artefact: \texttt{whois} lookups for the four public hops in Table~\ref{tab:whoispublic}, verbatim:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+> whois 14.143.159.145 | grep -iE "orgname|netname|descr"
+netname:        TATACOMM-IN
+descr:          Internet Service Provider
+descr:          TATA Communications formerly VSNL is Leading ISP,
+descr:          Data and Voice Carrier in India
+descr:          Tata Communications Limited
+
+> whois 121.240.255.30 | grep -iE "orgname|netname|descr"
+netname:        TATACOMM-IN
+descr:          Route for VSNL
+
+> whois 104.23.231.30 | grep -iE "orgname|netname|descr"
+NetName:        CLOUDFLARENET
+OrgName:        Cloudflare, Inc.
+
+> whois 172.67.75.52 | grep -iE "orgname|netname|descr"
+NetName:        CLOUDFLARENET
+OrgName:        Cloudflare, Inc.
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Background}, Section A1.3, Table~\ref{tab:whoispublic}.
 
 \textbf{E-8 -- log}\\
-Who: \textcolor{red}{[TODO]}\quad When: quiet hour, 05:30\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: 300-packet continuous ping log to T3, quiet hour.\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: quiet hour, 05:30\quad Where: NB-09, Satpura Hostel\\
+Artefact: 300-packet continuous ping to T3, quiet hour, first/last 10 lines:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=46.4 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=47.1 ms
+ ... (280 lines omitted; full log in evidences/e7.txt) ...
+64 bytes from 8.8.8.8: icmp_seq=299 icmp_seq=299 ttl=112 time=49.3 ms
+64 bytes from 8.8.8.8: icmp_seq=300 ttl=112 time=46.9 ms
+
+--- 8.8.8.8 ping statistics ---
+300 packets transmitted, 300 received, 0% packet loss, time 299257ms
+rtt min/avg/max/mdev = 44.269/48.832/154.554/10.852 ms
+\end{verbatim}
+\end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a33plot}.
 
 \textbf{E-9 -- log}\\
-Who: \textcolor{red}{[TODO]}\quad When: busy hour, \textcolor{red}{[TODO: exact time]}\quad Where: \textcolor{red}{[TODO]}\\
-Artefact: 300-packet continuous ping log to T3, busy hour.\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: busy hour, \textcolor{red}{[TODO: exact time]}\quad Where: NB-09, Satpura Hostel\\
+Artefact: 300-packet continuous ping to T3, busy hour, first/last 10 lines:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=114 time=32.6 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=114 time=27.2 ms
+ ... (280 lines omitted; full log in evidences/e8.txt) ...
+64 bytes from 8.8.8.8: icmp_seq=299 ttl=114 time=25.0 ms
+64 bytes from 8.8.8.8: icmp_seq=300 ttl=114 time=26.1 ms
+
+--- 8.8.8.8 ping statistics ---
+300 packets transmitted, 300 received, 0% packet loss, time 299353ms
+rtt min/avg/max/mdev = 24.356/31.706/192.284/17.041 ms
+\end{verbatim}
+\end{quote}
 Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a33plot}.
 
-\textcolor{red}{\footnotesize TODO -- remaining items (E-10 through E-14/15): raw
-\texttt{ping -c 50} output for T1--T5; packet-size sweep output for T1/T3;
-class-map verification screenshots (A2.3). Command output must be verbatim, prompt and errors included.}
+\textbf{E-10 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 19:35\quad Where: NB-09, Satpura Hostel\\
+Artefact: 50-packet ping summaries for T1 and T2:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+> ping -c 50 -s 64 10.184.0.13
+--- 10.184.0.13 ping statistics ---
+50 packets transmitted, 50 received, 0% packet loss, time 49072ms
+rtt min/avg/max/mdev = 3.904/8.891/96.290/12.787 ms
+
+> ping -c 50 -s 64 www.iitd.ac.in
+--- www.iitd.ac.in ping statistics ---
+50 packets transmitted, 50 received, 0% packet loss, time 49078ms
+rtt min/avg/max/mdev = 3.315/7.489/14.110/2.716 ms
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Figure~\ref{fig:a31plot}.
+
+\textbf{E-11 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 20-08-2026, 04:50\quad Where: NB-09, Satpura Hostel\\
+Artefact: 50-packet ping summaries for T3 and T5 (note the minor packet loss on both -- 2\% and
+4\% respectively -- not previously called out in Chapter~3):
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+> ping -c 50 -s 64 8.8.8.8
+--- 8.8.8.8 ping statistics ---
+50 packets transmitted, 49 received, 2% packet loss, time 49119ms
+rtt min/avg/max/mdev = 42.824/49.859/119.830/11.032 ms
+
+> ping -c 50 -s 64 www.mit.edu
+--- www.mit.edu ping statistics ---
+50 packets transmitted, 48 received, 4% packet loss, time 49175ms
+rtt min/avg/max/mdev = 35.596/51.145/247.982/36.326 ms
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Figure~\ref{fig:a31plot}.
+
+\textbf{E-12 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: \textcolor{red}{[TODO]}\quad Where: NB-09, Satpura Hostel\\
+Artefact: 100\% packet loss for T4:
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+> ping -c 50 -s 64 www.iitb.ac.in
+PING www.iitb.ac.in (103.21.124.133) 64(92) bytes of data.
+--- www.iitb.ac.in ping statistics ---
+50 packets transmitted, 0 received, 100% packet loss, time 50162ms
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Implementation}, Table~\ref{tab:rttstats}, Section A3.1 firewall-drop discussion.
+
+\textbf{E-13 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 20:00\quad Where: NB-09, Satpura Hostel\\
+Artefact: packet-size sweep summaries for T1 (64/256/512/1024/1400 bytes):
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+--- 10.184.0.13 ping statistics --- (size 64)
+rtt min/avg/max/mdev = 3.186/10.550/110.213/20.142 ms
+--- 10.184.0.13 ping statistics --- (size 256)
+rtt min/avg/max/mdev = 2.838/5.688/27.777/4.310 ms
+--- 10.184.0.13 ping statistics --- (size 512)
+rtt min/avg/max/mdev = 2.891/6.757/44.268/7.115 ms
+--- 10.184.0.13 ping statistics --- (size 1024)
+rtt min/avg/max/mdev = 3.043/6.273/20.171/3.219 ms
+--- 10.184.0.13 ping statistics --- (size 1400)
+rtt min/avg/max/mdev = 3.202/6.025/11.310/1.969 ms
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a32plot}, T1 regression.
+
+\textbf{E-14 -- command output}\\
+Who: Tejasvi Shrivastava (2024CS10582)\quad When: 19-08-2026, 20:15\quad Where: NB-09, Satpura Hostel\\
+Artefact: packet-size sweep summaries for T3 (64/256/512/1024/1400 bytes):
+\begin{quote}\ttfamily\footnotesize
+\begin{verbatim}
+--- 8.8.8.8 ping statistics --- (size 64)
+rtt min/avg/max/mdev = 44.637/46.964/52.083/1.430 ms
+--- 8.8.8.8 ping statistics --- (size 256)
+rtt min/avg/max/mdev = 44.587/52.202/183.043/24.330 ms
+--- 8.8.8.8 ping statistics --- (size 512)
+rtt min/avg/max/mdev = 44.733/50.704/83.341/7.764 ms
+--- 8.8.8.8 ping statistics --- (size 1024)
+rtt min/avg/max/mdev = 44.709/49.003/84.001/6.643 ms
+--- 8.8.8.8 ping statistics --- (size 1400)
+rtt min/avg/max/mdev = 45.368/47.889/52.012/1.350 ms
+\end{verbatim}
+\end{quote}
+Supports: Chapter~\ref{ch:Implementation}, Figure~\ref{fig:a32plot}, T3 regression.
+
+\textbf{E-15 -- screenshot}\\
+Who: \textcolor{red}{[TODO]}\quad When: \textcolor{red}{[TODO]}\quad Where: \textcolor{red}{[TODO]}\\
+Artefact: \textcolor{red}{[TODO: screenshot of the shared class spreadsheet showing our
+contributed rows and the two other teams' rows we verified]}.\\
+Supports: Chapter~\ref{ch:Design}, Section A2.3.

@@ -1,0 +1,25 @@
+❯ ping -c 30 -s 64 8.8.8.8
+ping -c 30 -s 256 8.8.8.8
+ping -c 30 -s 512 8.8.8.8
+ping -c 30 -s 1024 8.8.8.8
+ping -c 30 -s 1400 8.8.8.8
+
+--- 8.8.8.8 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29033ms
+rtt min/avg/max/mdev = 44.637/46.964/52.083/1.430 ms
+
+--- 8.8.8.8 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29045ms
+rtt min/avg/max/mdev = 44.587/52.202/183.043/24.330 ms
+
+--- 8.8.8.8 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29041ms
+rtt min/avg/max/mdev = 44.733/50.704/83.341/7.764 ms
+
+--- 8.8.8.8 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29041ms
+rtt min/avg/max/mdev = 44.709/49.003/84.001/6.643 ms
+
+--- 8.8.8.8 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29040ms
+rtt min/avg/max/mdev = 45.368/47.889/52.012/1.350 ms

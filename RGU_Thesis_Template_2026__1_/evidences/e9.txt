@@ -1,0 +1,11 @@
+~ 
+❯ ping -c 50 -s 64 10.184.0.13
+--- 10.184.0.13 ping statistics ---
+50 packets transmitted, 50 received, 0% packet loss, time 49072ms
+rtt min/avg/max/mdev = 3.904/8.891/96.290/12.787 ms
+
+~ 
+❯ ping -c 50 -s 64 www.iitd.ac.in
+--- www.iitd.ac.in ping statistics ---
+50 packets transmitted, 50 received, 0% packet loss, time 49078ms
+rtt min/avg/max/mdev = 3.315/7.489/14.110/2.716 ms

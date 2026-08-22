@@ -1,0 +1,26 @@
+~ 
+❯ ping -c 30 -s 64 10.184.0.13
+ping -c 30 -s 256 10.184.0.13
+ping -c 30 -s 512 10.184.0.13
+ping -c 30 -s 1024 10.184.0.13
+ping -c 30 -s 1400 10.184.0.13
+
+--- 10.184.0.13 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29037ms
+rtt min/avg/max/mdev = 3.186/10.550/110.213/20.142 ms
+
+--- 10.184.0.13 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29039ms
+rtt min/avg/max/mdev = 2.838/5.688/27.777/4.310 ms
+
+--- 10.184.0.13 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29034ms
+rtt min/avg/max/mdev = 2.891/6.757/44.268/7.115 ms
+
+--- 10.184.0.13 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29034ms
+rtt min/avg/max/mdev = 3.043/6.273/20.171/3.219 ms
+
+--- 10.184.0.13 ping statistics ---
+30 packets transmitted, 30 received, 0% packet loss, time 29037ms
+rtt min/avg/max/mdev = 3.202/6.025/11.310/1.969 ms
